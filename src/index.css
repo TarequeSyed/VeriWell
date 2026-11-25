@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply selection:bg-sage-300 selection:text-forest-900 bg-cream-100 text-forest-900 font-sans;
+  }
+}
+
+/* Neo-Brutalist Minimalism Design Utilities */
+@layer utilities {
+  .brutal-card {
+    @apply bg-white border-2 border-forest-900 rounded-xl shadow-[4px_4px_0px_0px_#0F2923] transition-all;
+  }
+
+  .brutal-card-sm {
+    @apply bg-white border-2 border-forest-900 rounded-lg shadow-[2px_2px_0px_0px_#0F2923];
+  }
+
+  .brutal-button {
+    @apply bg-forest-800 text-cream-50 font-bold border-2 border-forest-900 rounded-xl shadow-[3px_3px_0px_0px_#0F2923] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_#0F2923] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .brutal-button-secondary {
+    @apply bg-sage-200 text-forest-900 font-bold border-2 border-forest-900 rounded-xl shadow-[3px_3px_0px_0px_#0F2923] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_#0F2923] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all;
+  }
+
+  .brutal-badge {
+    @apply font-mono text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md border-2 border-forest-900;
+  }
+
+  .ambient-glow {
+    background: radial-gradient(circle at 50% 0%, rgba(221, 236, 226, 0.45) 0%, rgba(246, 245, 239, 0) 70%);
+  }
+}
+
