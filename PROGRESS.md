@@ -52,14 +52,33 @@
   - Distinctive Neo-Brutalist design language with tactile offset shadows (`#0F2923`) and 2px dark borders
   - Complete English ↔ Hindi coverage across all 5 modules, sample forwards, and WHO/NIDDK evidence corpus
   - Local browser speech synthesis dynamically reading Hindi (`hi-IN`) and English (`en-US`)
+- [x] **Firebase Anonymous Auth & Firestore Integration**:
+  - Privacy-preserving Anonymous Authentication (`src/services/firebase/auth.ts`)
+  - Telemetry persistence (`evidence_traces`) and verification logs (`verification_logs`) in `src/services/firebase/firestore.ts`
+  - Automated fire-and-forget routing telemetry wired to `emitTrace()` in `src/services/ai/router.ts`
+  - Production-ready `firestore.rules` created with strict schema, field size limits, and user ownership validation
+  - `firebase.json` updated with `firestore` section
+- [x] **Landing Hero Section & UI Polish**:
+  - `Hero.tsx` created featuring value proposition, #BuildHybridAI 2026 badge, stats grid, and hybrid routing comparison
+  - Set as default landing view in `App.tsx` with home navigation button
+  - Shimmer skeleton loaders (`.skeleton-shimmer`) added in `ClaimLab.tsx` for cloud inference states
+  - Smooth `@keyframes fadeIn` animations for tab switching in `src/index.css`
+- [x] **PREFER_ON_DEVICE Public Evidence Simplification**:
+  - Surfaced `simplifyPublicEvidence()` with "AI Plain-Language Points" button in `EvidenceStories.tsx`
+  - Bilingual support (English + Hindi Devanagari) with automated fallback to Chrome Prompt API on-device
+- [x] **Awwwards-Inspired Homepage & Auth Flow**:
+  - High-impact editorial `LandingPage.tsx` with animated marquee ticker ribbon, dual-domain architecture breakdown, and interactive 5-module feature Bento Grid
+  - `AuthModal.tsx` modal dialog supporting Google Sign-In (`signInWithGoogle`) and 1-Click Judge & Evaluator Demo access (`signInAsJudgeDemo`)
+  - Seamless Judge Demo bypass in header and hero for frictionless hackathon review
+  - User session display and logout lifecycle integration in `App.tsx`
 
 ---
 
 ## Evidence of Runs & Verification
 - `LanguageModel.availability()` evaluated in Chrome DevTools: Returned `'available'`.
 - `npx -y firebase-tools@latest --version`: Returned `15.36.0`.
-- `npm run typecheck`: Exit code 0 (all TypeScript types verified).
-- `npm run build`: Exit code 0 (1607 modules transformed, bundle emitted into `dist/`).
+- `npm run typecheck`: Exit code 0 (TypeScript verified with 0 errors).
+- `npm run build`: Exit code 0 (1625 modules transformed, bundle emitted into `dist/` in 11.96s).
 
 ---
 

@@ -1,0 +1,171 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: evidence_traces
+    // Document ID: Auto-generated document ID (Firestore addDoc)
+    // Purpose: Stores telemetry traces from hybrid AI routing
+    //          (Chrome Gemini Nano on-device + Firebase AI Logic in cloud)
+    // Fields:
+    //   - taskId: string (required, 1..128 chars) - Unique task/trace identifier
+    //   - task: string (required, 1..100 chars) - AI task descriptor (e.g., 'verify_claims', 'analyze_belief')
+    //   - actualSource: string (required, in ['ON_DEVICE', 'IN_CLOUD', 'UNKNOWN']) - Execution backend source
+    //   - requestedMode: string (required, 1..50 chars) - Requested routing mode (e.g., 'HYBRID', 'ONLY_ON_DEVICE', 'ONLY_IN_CLOUD')
+    //   - elapsedMs: number (required, >= 0 and <= 300000) - Execution latency in milliseconds
+    //   - outcome: string (required, in ['ok', 'error']) - Status of inference operation
+    //   - details: string or null (optional, max 2000 chars if string) - Diagnostic details or error string
+    //   - uid: string (required, 1..128 chars) - Creator user UID, strictly matching request.auth.uid
+    //   - createdAt: timestamp (required, recent) - Server commit timestamp of trace creation
+    //
+    // Collection: verification_logs
+    // Document ID: Auto-generated document ID (Firestore addDoc)
+    // Purpose: Stores privacy-preserving, anonymized claim verification events
+    // Fields:
+    //   - verdict: string (required, 1..50 chars) - Verification verdict (e.g., 'supported', 'misleading', 'contradicted', 'insufficient_evidence', 'out_of_scope')
+    //   - inferenceMode: string (required, 1..50 chars) - Routing inference mode utilized
+    //   - uid: string (required, 1..128 chars) - Creator user UID, strictly matching request.auth.uid
+    //   - createdAt: timestamp (required, recent) - Server commit timestamp of verification log
+    //
+    // Collection: evidence_cards
+    // Document ID: Curated card ID (e.g., 'who-dm-01', 'who-ht-01', 'niddk-med-01')
+    // Purpose: Curated clinical evidence corpus from authoritative health bodies (WHO / NIDDK)
+    // Access: Public read allowed for clinical transparency. Client write strictly forbidden.
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    // Check if the request is from an authenticated user (including Firebase Anonymous Auth)
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if user owns the resource based on userId
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Check if user is owner based on existing resource uid field
+    function isDocOwner() {
+      return isAuthenticated() && request.auth.uid == resource.data.uid;
+    }
+
+    // Verify UID in write payload matches authenticated caller
+    function uidUnchanged() {
+      return !('uid' in request.resource.data) ||
+        request.resource.data.uid == request.auth.uid;
+    }
+
+    // Ensure uid field is not modified on update
+    function uidNotModified() {
+      return !('uid' in request.resource.data) ||
+        request.resource.data.uid == resource.data.uid;
+    }
+
+    // Validate that all required fields exist in request resource
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    // Validate that the request resource contains ONLY allowed fields (strictly enforces schema)
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    // Validate string field length constraints
+    function validStringLength(field, minLen, maxLen) {
+      return request.resource.data[field] is string &&
+        request.resource.data[field].size() >= minLen &&
+        request.resource.data[field].size() <= maxLen;
+    }
+
+    // Validate that a timestamp is recent (within 5 minutes in past up to current request time) or matches server request.time
+    function isRecent(time) {
+      return time is timestamp &&
+        (time == request.time ||
+         (time > request.time - duration.value(5, 'm') && time <= request.time));
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+
+    // Validate evidence_traces document structure and field constraints
+    function isValidEvidenceTrace(data) {
+      return hasRequiredFields(['taskId', 'task', 'actualSource', 'requestedMode', 'elapsedMs', 'outcome', 'uid', 'createdAt']) &&
+        hasOnlyAllowedFields(['taskId', 'task', 'actualSource', 'requestedMode', 'elapsedMs', 'outcome', 'details', 'uid', 'createdAt']) &&
+        data.taskId is string && data.taskId.size() >= 1 && data.taskId.size() <= 128 &&
+        data.task is string && data.task.size() >= 1 && data.task.size() <= 100 &&
+        data.actualSource is string && data.actualSource in ['ON_DEVICE', 'IN_CLOUD', 'UNKNOWN'] &&
+        data.requestedMode is string && data.requestedMode.size() >= 1 && data.requestedMode.size() <= 50 &&
+        data.elapsedMs is number && data.elapsedMs >= 0 && data.elapsedMs <= 300000 &&
+        data.outcome is string && data.outcome in ['ok', 'error'] &&
+        (!('details' in data) || data.details == null || (data.details is string && data.details.size() <= 2000)) &&
+        data.uid is string && data.uid == request.auth.uid &&
+        data.createdAt is timestamp && isRecent(data.createdAt);
+    }
+
+    // Validate verification_logs document structure and field constraints
+    function isValidVerificationLog(data) {
+      return hasRequiredFields(['verdict', 'inferenceMode', 'uid', 'createdAt']) &&
+        hasOnlyAllowedFields(['verdict', 'inferenceMode', 'uid', 'createdAt']) &&
+        data.verdict is string && data.verdict.size() >= 1 && data.verdict.size() <= 50 &&
+        data.inferenceMode is string && data.inferenceMode.size() >= 1 && data.inferenceMode.size() <= 50 &&
+        data.uid is string && data.uid == request.auth.uid &&
+        data.createdAt is timestamp && isRecent(data.createdAt);
+    }
+
+    // ===============================================================
+    // Collection Rules
+    // ===============================================================
+
+    // 1. Evidence Traces: Hybrid AI Routing Telemetry
+    // Telemetry trace log created after hybrid routing between Chrome Gemini Nano and Firebase AI Logic.
+    // - Read: Allowed for authenticated users (including Anonymous Auth)
+    // - Create: Allowed for authenticated callers matching uid with strict schema validation
+    // - Update / Delete: Denied (strictly append-only telemetry)
+    match /evidence_traces/{traceId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() &&
+        request.resource.data.uid == request.auth.uid &&
+        isValidEvidenceTrace(request.resource.data);
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // 2. Verification Logs: Anonymized Claim Verification Events
+    // Anonymized event log storing verification verdicts and routing modes (no raw claim text stored).
+    // - Read: Allowed for authenticated users (including Anonymous Auth)
+    // - Create: Allowed for authenticated callers matching uid with strict schema validation
+    // - Update / Delete: Denied (strictly append-only event log)
+    match /verification_logs/{logId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() &&
+        request.resource.data.uid == request.auth.uid &&
+        isValidVerificationLog(request.resource.data);
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // 3. Evidence Cards: Curated Clinical Evidence Corpus
+    // Verified clinical facts from WHO and NIDDK used by the citation grounding engine.
+    // - Read: Public read allowed for transparency in health fact checking
+    // - Write: Denied for client SDKs (managed via administrative / deployment pipelines)
+    match /evidence_cards/{cardId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // 4. Default Deny: Deny all other collections and operations
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

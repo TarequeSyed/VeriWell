@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { BookOpen, ChevronLeft, ChevronRight, ExternalLink, ShieldCheck, CheckCircle2, Volume2, VolumeX } from 'lucide-react';
+import { BookOpen, ChevronLeft, ChevronRight, ExternalLink, ShieldCheck, CheckCircle2, Volume2, VolumeX, Sparkles, RefreshCw, Cpu } from 'lucide-react';
 import { evidenceCorpus } from '../services/evidence';
 import { speakTextLocally, stopSpeakingLocally } from '../services/speech';
+import { simplifyPublicEvidence } from '../services/ai/router';
 import { translations, Language } from '../i18n/translations';
 
 interface EvidenceStoriesProps {
@@ -12,18 +13,24 @@ export const EvidenceStories: React.FC<EvidenceStoriesProps> = ({ lang = 'en' })
   const t = translations[lang].stories;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [simplifiedText, setSimplifiedText] = useState<string | null>(null);
+  const [isSimplifying, setIsSimplifying] = useState(false);
 
   const currentCard = evidenceCorpus[currentIndex];
 
-  const handleNext = () => {
+  const resetCardState = () => {
     stopSpeakingLocally();
     setIsSpeaking(false);
+    setSimplifiedText(null);
+  };
+
+  const handleNext = () => {
+    resetCardState();
     setCurrentIndex((prev) => (prev + 1) % evidenceCorpus.length);
   };
 
   const handlePrev = () => {
-    stopSpeakingLocally();
-    setIsSpeaking(false);
+    resetCardState();
     setCurrentIndex((prev) => (prev - 1 + evidenceCorpus.length) % evidenceCorpus.length);
   };
 
@@ -34,7 +41,7 @@ export const EvidenceStories: React.FC<EvidenceStoriesProps> = ({ lang = 'en' })
     } else if (currentCard) {
       const titleToRead = (lang === 'hi' && currentCard.title_hi) ? currentCard.title_hi : currentCard.title;
       const orgToRead = (lang === 'hi' && currentCard.organization_hi) ? currentCard.organization_hi : currentCard.organization;
-      const textToRead = (lang === 'hi' && currentCard.paraphrase_hi) ? currentCard.paraphrase_hi : currentCard.paraphrase;
+      const textToRead = simplifiedText || ((lang === 'hi' && currentCard.paraphrase_hi) ? currentCard.paraphrase_hi : currentCard.paraphrase);
       
       const fullText = `${titleToRead}. ${orgToRead}: ${textToRead}`;
       speakTextLocally(
@@ -43,6 +50,20 @@ export const EvidenceStories: React.FC<EvidenceStoriesProps> = ({ lang = 'en' })
         () => setIsSpeaking(false),
         lang === 'hi' ? 'hi-IN' : 'en-US'
       );
+    }
+  };
+
+  const handleSimplify = async () => {
+    if (!currentCard || isSimplifying) return;
+    setIsSimplifying(true);
+    try {
+      const textToSimplify = (lang === 'hi' && currentCard.paraphrase_hi) ? currentCard.paraphrase_hi : currentCard.paraphrase;
+      const simplified = await simplifyPublicEvidence(textToSimplify, lang);
+      setSimplifiedText(simplified);
+    } catch (err) {
+      console.error('Simplification error:', err);
+    } finally {
+      setIsSimplifying(false);
     }
   };
 
@@ -79,8 +100,7 @@ export const EvidenceStories: React.FC<EvidenceStoriesProps> = ({ lang = 'en' })
                   key={i}
                   type="button"
                   onClick={() => {
-                    stopSpeakingLocally();
-                    setIsSpeaking(false);
+                    resetCardState();
                     setCurrentIndex(i);
                   }}
                   className={`h-2 rounded-full border-2 border-forest-900 transition-all ${i === currentIndex ? 'w-10 bg-forest-900' : 'w-3 bg-sage-200'}`}
@@ -93,7 +113,7 @@ export const EvidenceStories: React.FC<EvidenceStoriesProps> = ({ lang = 'en' })
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <span className="brutal-badge bg-sage-200 text-forest-950 border-forest-900">
                   {currentCard.topic}
@@ -103,26 +123,45 @@ export const EvidenceStories: React.FC<EvidenceStoriesProps> = ({ lang = 'en' })
                 </span>
               </div>
 
-              {/* Local Browser Audio Narration Button */}
-              <button
-                type="button"
-                onClick={handleToggleSpeech}
-                className={`brutal-card-sm inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold transition-all ${
-                  isSpeaking 
-                    ? 'bg-amber-300 text-amber-950 border-amber-950 animate-pulse' 
-                    : 'bg-cream-100 text-forest-900 hover:bg-sage-100'
-                }`}
-              >
-                {isSpeaking ? (
-                  <>
-                    <VolumeX className="w-3.5 h-3.5" /> {t.stopButton}
-                  </>
-                ) : (
-                  <>
-                    <Volume2 className="w-3.5 h-3.5 text-forest-900" /> {t.listenButton}
-                  </>
-                )}
-              </button>
+              {/* Action Buttons: TTS + Hybrid AI Simplification */}
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleSimplify}
+                  disabled={isSimplifying}
+                  className="brutal-card-sm inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold bg-sage-100 text-forest-900 hover:bg-sage-200 transition-all"
+                >
+                  {isSimplifying ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" /> {t.simplifying}
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-3.5 h-3.5 text-forest-900" /> {t.simplifyButton}
+                    </>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleToggleSpeech}
+                  className={`brutal-card-sm inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold transition-all ${
+                    isSpeaking 
+                      ? 'bg-amber-300 text-amber-950 border-amber-950 animate-pulse' 
+                      : 'bg-cream-100 text-forest-900 hover:bg-sage-100'
+                  }`}
+                >
+                  {isSpeaking ? (
+                    <>
+                      <VolumeX className="w-3.5 h-3.5" /> {t.stopButton}
+                    </>
+                  ) : (
+                    <>
+                      <Volume2 className="w-3.5 h-3.5 text-forest-900" /> {t.listenButton}
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
 
             <h3 className="text-2xl font-black text-forest-900 leading-snug tracking-tight">
@@ -132,6 +171,23 @@ export const EvidenceStories: React.FC<EvidenceStoriesProps> = ({ lang = 'en' })
             <p className="text-forest-900 text-base leading-relaxed pt-1 font-medium">
               {cardParaphrase}
             </p>
+
+            {/* AI Simplified View */}
+            {simplifiedText && (
+              <div className="p-5 bg-sage-50 border-2 border-forest-900 rounded-xl space-y-2 mt-3 animate-fade-in shadow-[2px_2px_0px_0px_#0F2923]">
+                <div className="flex items-center justify-between">
+                  <span className="font-black text-forest-950 text-xs flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-forest-800" /> {t.simplifiedTitle}
+                  </span>
+                  <span className="brutal-badge bg-emerald-200 text-emerald-950 border-forest-900 flex items-center gap-1 text-[10px]">
+                    <Cpu className="w-3 h-3" /> PREFER_ON_DEVICE
+                  </span>
+                </div>
+                <div className="text-forest-900 text-sm leading-relaxed whitespace-pre-line font-medium pt-1">
+                  {simplifiedText}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="p-4 bg-cream-50 rounded-xl border-2 border-forest-900 space-y-1 text-xs">

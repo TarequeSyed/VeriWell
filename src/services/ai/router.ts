@@ -1,5 +1,7 @@
 import { getAI, getGenerativeModel, GoogleAIBackend, InferenceMode } from 'firebase/ai';
 import { app, initAppCheck } from '../firebase/config';
+import { ensureAnonymousAuth, currentUid } from '../firebase/auth';
+import { persistInferenceTrace } from '../firebase/firestore';
 import { evidenceCorpus, validateCitations } from '../evidence';
 import { 
   ClaimResult, 
@@ -41,7 +43,12 @@ export function subscribeToTraces(listener: TraceListener): () => void {
 
 function emitTrace(trace: InferenceTrace) {
   traceListeners.forEach((l) => l(trace));
+  // Fire-and-forget persistence to Firestore (non-blocking)
+  persistInferenceTrace(trace, currentUid()).catch(() => {/* silent — telemetry is optional */});
 }
+
+// Kick off anonymous auth early so the token is ready when traces fire
+ensureAnonymousAuth().catch(() => {/* silent — Firestore writes will just be uid:null */});
 
 /**
  * Check if Chrome's on-device Prompt API (LanguageModel) is available
@@ -494,9 +501,49 @@ Respond with strict JSON:
  * Task 4: Public Plain-Language Explanation (Resilient Hybrid Fallback)
  * Uses: PREFER_ON_DEVICE
  */
-export async function simplifyPublicEvidence(evidenceSummary: string): Promise<string> {
+export async function simplifyPublicEvidence(
+  evidenceSummary: string,
+  lang: 'en' | 'hi' = 'en'
+): Promise<string> {
   const startTime = performance.now();
   const traceId = 'trace-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6);
+
+  const prompt = lang === 'hi'
+    ? `चिकित्सीय साक्ष्य को किसी बुजुर्ग या बिना मेडिकल पृष्ठभूमि वाले व्यक्ति के लिए 3 सरल, आश्वस्त करने वाले और स्पष्ट बुलेट बिंदुओं में देवनागरी हिंदी में लिखें:\n\n${evidenceSummary}`
+    : `Rewrite this medical evidence summary into 3 simple, comforting, plain-language bullet points suitable for a family member with no medical background:\n\n${evidenceSummary}`;
+
+  // If offline simulation is active, route directly to on-device LanguageModel
+  if (isOfflineSimulated) {
+    try {
+      // @ts-ignore
+      if (typeof LanguageModel !== 'undefined' && typeof LanguageModel.create === 'function') {
+        // @ts-ignore
+        const session = await LanguageModel.create({
+          systemPrompt: lang === 'hi'
+            ? 'आप एक दयालु स्वास्थ्य शिक्षक हैं जो जटिल चिकित्सा तथ्यों को सरल भाषा में समझाते हैं।'
+            : 'You are a compassionate health educator explaining clinical facts in clear, plain language.'
+        });
+        const response = await session.prompt(prompt);
+        session.destroy?.();
+
+        const elapsed = Math.round(performance.now() - startTime);
+        emitTrace({
+          id: traceId,
+          task: 'Public Plain-Language Simplification (Offline Simulated)',
+          requestedMode: 'PREFER_ON_DEVICE',
+          actualSource: 'ON_DEVICE',
+          elapsedMs: elapsed,
+          outcome: 'ok',
+          timestamp: new Date().toLocaleTimeString(),
+          details: 'Direct on-device execution via Chrome Prompt API during offline simulation.'
+        });
+
+        return response.trim();
+      }
+    } catch (offlineErr: any) {
+      console.warn('Offline on-device simplification failed:', offlineErr);
+    }
+  }
 
   try {
     const hybridModel = getGenerativeModel(ai, {
@@ -507,7 +554,6 @@ export async function simplifyPublicEvidence(evidenceSummary: string): Promise<s
       }
     });
 
-    const prompt = `Rewrite this medical evidence summary into 3 simple, comforting, plain-language bullet points suitable for a family member with no medical background:\n\n${evidenceSummary}`;
     const result = await hybridModel.generateContent(prompt);
     
     // Check actual inference source reported by Firebase SDK
@@ -528,6 +574,33 @@ export async function simplifyPublicEvidence(evidenceSummary: string): Promise<s
 
     return result.response.text();
   } catch (err: any) {
+    // Try on-device fallback if cloud fails
+    try {
+      // @ts-ignore
+      if (typeof LanguageModel !== 'undefined' && typeof LanguageModel.create === 'function') {
+        // @ts-ignore
+        const session = await LanguageModel.create();
+        const response = await session.prompt(prompt);
+        session.destroy?.();
+
+        const elapsed = Math.round(performance.now() - startTime);
+        emitTrace({
+          id: traceId,
+          task: 'Public Plain-Language Simplification (Fallback)',
+          requestedMode: 'PREFER_ON_DEVICE',
+          actualSource: 'ON_DEVICE',
+          elapsedMs: elapsed,
+          outcome: 'ok',
+          timestamp: new Date().toLocaleTimeString(),
+          details: 'Fell back to Chrome on-device LanguageModel after cloud exception.'
+        });
+
+        return response.trim();
+      }
+    } catch {
+      // Fallback failed
+    }
+
     const elapsed = Math.round(performance.now() - startTime);
     emitTrace({
       id: traceId,

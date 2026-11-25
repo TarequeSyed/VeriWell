@@ -74,3 +74,90 @@
 - **Bug 8: Unused `title` variable in `familyBridge.ts`**:
   - *Cause*: `title` was extracted from `evidenceCard` but not concatenated in the Hindi counter-forward string.
   - *Fix*: Integrated `"${title}"` into the Hindi medical guideline citation.
+
+---
+
+## [2026-11-25] - Firestore Integration, Landing Hero & Resilient Hybrid Simplification
+
+### 1. What Was Done
+- **Firebase Anonymous Authentication**:
+  - Implemented `src/services/firebase/auth.ts` providing seamless, privacy-preserving session authentication via `ensureAnonymousAuth()`.
+  - Ensures all cloud writes (telemetry and verification logs) are securely tied to an authenticated session without requiring personal login credentials.
+- **Firestore Telemetry & Verification Event Logging**:
+  - Implemented `src/services/firebase/firestore.ts` managing `evidence_traces` (routing telemetry) and `verification_logs` (anonymized clinical outcomes).
+  - Configured `firestore` block in `firebase.json` and delegated authoring of production `firestore.rules` to the `firestore-rules-author` subagent.
+- **Wired Telemetry Logging into Hybrid Router**:
+  - Updated `emitTrace()` in `src/services/ai/router.ts` to automatically persist all on-device and cloud routing traces to Firestore.
+- **Landing Hero Section**:
+  - Created `src/components/Hero.tsx` featuring high-impact Neo-Brutalist design, #BuildHybridAI 2026 badge indicators, live stat metrics (2+ AI Modes, 5 WHO Sources, 0KB Private Data, 100% Open Source), interactive 3-card feature triptych, and an intuitive dual-domain architecture breakdown.
+  - Set as the default landing view in `src/App.tsx` with a Home icon in the navigation bar.
+- **PREFER_ON_DEVICE Public Evidence Simplification**:
+  - Upgraded `simplifyPublicEvidence` in `src/services/ai/router.ts` with bilingual Devanagari Hindi support and automated Chrome Prompt API on-device fallback.
+  - Surfaced the feature in `src/components/EvidenceStories.tsx` with an "AI Plain-Language Points" button and dedicated breakdown card.
+- **Shimmer Skeleton Loading States**:
+  - Added `@keyframes shimmer` and `.skeleton-shimmer` utility in `src/index.css`.
+  - Added animated skeleton placeholder cards in `src/components/ClaimLab.tsx` displaying the active `ONLY_IN_CLOUD` inference status while cloud AI is executing.
+- **Smooth Navigation Transitions**:
+  - Added `@keyframes fadeIn` and `.animate-fade-in` in `src/index.css` for slick tab switching.
+- **Build & Verification**:
+  - Verified full TypeScript compliance (`npm run typecheck` returned code 0).
+  - Verified production bundle build (`npm run build` completed in 16.60s with 0 errors).
+
+### 2. Changes Made
+- `src/services/firebase/auth.ts`: Created anonymous authentication service.
+- `src/services/firebase/firestore.ts`: Created Firestore telemetry and verification event services.
+- `src/services/ai/router.ts`: Integrated Firestore trace logging into `emitTrace()`; upgraded `simplifyPublicEvidence()` with language awareness and offline simulation direct-route.
+- `src/components/Hero.tsx`: Created Neo-Brutalist landing hero component.
+- `src/components/EvidenceStories.tsx`: Added "AI Plain-Language Points" simplification button and card.
+- `src/components/ClaimLab.tsx`: Added skeleton loader during verification and Firestore event persistence.
+- `src/App.tsx`: Added `Hero` component, Home tab navigation button, and animated tab transitions.
+- `src/i18n/translations.ts`: Added simplification keys for English and Hindi.
+- `src/index.css`: Added `@keyframes fadeIn`, `.animate-fade-in`, `@keyframes shimmer`, and `.skeleton-shimmer`.
+- `firebase.json`: Configured `firestore` section with rules path.
+
+### 3. Bugs Encountered & How They Were Fixed
+- **Bug 1: Missing Animation Utilities in CSS**:
+  - *Cause*: `animate-fade-in` was referenced in `App.tsx` and `ClaimLab.tsx` but was not declared in Tailwind config or `index.css`.
+  - *Fix*: Added custom `@keyframes fadeIn` and `@keyframes shimmer` directly into `@layer utilities` in `src/index.css`.
+- **Bug 2: Unhandled Simplification during Simulated Offline Mode**:
+  - *Cause*: Calling `simplifyPublicEvidence()` while `isOfflineSimulated` is true would attempt to call Firebase Cloud AI and throw an error before falling back.
+  - *Fix*: Added check for `isOfflineSimulated` at the top of `simplifyPublicEvidence()` to immediately route directly to the on-device Chrome `LanguageModel` session.
+- **Bug 3: Key mismatch in i18n translation strings**:
+  - *Cause*: `simplifiedTitle` and `simplifyButton` were initially missing from `TranslationStrings` interface and Hindi translations.
+  - *Fix*: Synchronized interface and both `en` and `hi` dictionaries in `src/i18n/translations.ts`.
+
+---
+
+## [2026-11-25] - Awwwards-Inspired Homepage, Google Auth & 1-Click Judge Demo Access
+
+### 1. What Was Done
+- **Awwwards-Inspired Homepage (`LandingPage.tsx`)**:
+  - Built an editorial, high-contrast homepage inspired by Awwwards-winning site designs.
+  - Integrated a marquee ribbon (`.animate-marquee`) emphasizing Google Chrome Built-in AI, Gemini Nano, Firebase AI Logic, and zero-knowledge privacy.
+  - Giant hero typography with accessible high-contrast badges and live hardware availability indicator.
+  - Dual-Domain architectural breakdown comparing the Public Cloud Domain (`ONLY_IN_CLOUD`) with the On-Device Sanctum (`ONLY_ON_DEVICE`).
+  - Interactive 5-module feature Bento Grid showcasing Claim Lab, Belief Engine, Family Bridge, Evidence Stories, and Real-Time Telemetry.
+  - High-impact bottom CTA banner for launching live demonstrations.
+- **Firebase Google Sign-In & 1-Click Judge Access (`auth.ts` & `AuthModal.tsx`)**:
+  - Extended `src/services/firebase/auth.ts` with `signInWithGoogle()` (using `GoogleAuthProvider` popup) and `signInAsJudgeDemo()` (using Firebase Anonymous Auth with an explicit "Hackathon Judge (Demo)" user persona).
+  - Built `src/components/AuthModal.tsx` modal dialog supporting both Google authentication and immediate 1-click Judge Demo access with zero signup required.
+  - Added user session tracking in `src/App.tsx` displaying live avatar/name or `[⚡ Judge Demo]` pill with one-click sign out.
+- **Judge Bypass Flow**:
+  - Added 1-Click "Judge Demo" button directly in the header and on the landing hero, instantly unlocking the full interactive suite (`ClaimLab`, `BeliefEngine`, `FamilyBridge`, `EvidenceStories`, `HybridMonitor`) without requiring any OAuth account setup.
+- **CSS Animations**:
+  - Added `@keyframes marquee` and `.animate-marquee` in `src/index.css`.
+
+### 2. Changes Made
+- `src/services/firebase/auth.ts`: Added `signInWithGoogle()`, `signInAsJudgeDemo()`, `signOutUser()`, and `subscribeToAuth()`.
+- `src/components/AuthModal.tsx`: Created Neo-Brutalist authentication dialog with Google Sign-in and Judge Demo options.
+- `src/components/LandingPage.tsx`: Created Awwwards-inspired landing page with interactive feature tabs and marquee ribbon.
+- `src/App.tsx`: Integrated `LandingPage`, `AuthModal`, authentication lifecycle listener, and user status indicators in header.
+- `src/index.css`: Added marquee animation keyframes.
+
+### 3. Bugs Encountered & How They Were Fixed
+- **Bug 1: Type mismatch in AuthModal state setter**:
+  - *Cause*: Calling `setIsLoading(false)` on a `'google' | 'judge' | null` state threw `TS2345: Argument of type 'false' is not assignable to parameter`.
+  - *Fix*: Changed `setIsLoading(false)` to `setIsLoading(null)`.
+- **Bug 2: Unused icon imports in `LandingPage.tsx`**:
+  - *Cause*: `Volume2`, `WifiOff`, `Layers`, `Heart`, `ChevronRight`, `ExternalLink` triggered `TS6133: declared but never read`.
+  - *Fix*: Cleaned up unused imports from `lucide-react`.

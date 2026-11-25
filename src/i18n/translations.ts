@@ -99,6 +99,9 @@ export interface TranslationStrings {
     sourceLabel: string;
     officialGuidelines: string;
     verifiedStamp: string;
+    simplifyButton: string;
+    simplifying: string;
+    simplifiedTitle: string;
   };
   monitor: {
     localNanoTitle: string;
@@ -249,6 +252,9 @@ export const translations: Record<Language, TranslationStrings> = {
       sourceLabel: "Source:",
       officialGuidelines: "Official Medical Guidelines",
       verifiedStamp: "Clinically Audited Content",
+      simplifyButton: "AI Plain-Language Points",
+      simplifying: "Simplifying with Hybrid AI...",
+      simplifiedTitle: "Hybrid AI Plain-Language Breakdown (PREFER_ON_DEVICE):",
     },
     monitor: {
       localNanoTitle: "Local Gemini Nano",
@@ -407,6 +413,9 @@ export const translations: Record<Language, TranslationStrings> = {
       sourceLabel: "स्रोत संस्था:",
       officialGuidelines: "आधिकारिक मेडिकल गाइडलाइन",
       verifiedStamp: "चिकित्सकीय रूप से प्रमाणित",
+      simplifyButton: "AI सरल भाषा में समझाएं",
+      simplifying: "हाइब्रिड AI से सरल बना रहे हैं...",
+      simplifiedTitle: "हाइब्रिड AI सरल भाषा विवरण (PREFER_ON_DEVICE):",
     },
     monitor: {
       localNanoTitle: "लोकल जेमिनी नैनो",

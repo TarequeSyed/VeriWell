@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ShieldCheck, AlertTriangle, ArrowRight, CheckCircle2, XCircle, HelpCircle, Sparkles, Lock, RefreshCw, Image as ImageIcon, Type, Upload } from 'lucide-react';
 import { verifyPublicClaimsCloud, verifyPublicImageCloud } from '../services/ai/router';
+import { persistVerificationEvent } from '../services/firebase/firestore';
+import { currentUid } from '../services/firebase/auth';
 import { ClaimResult } from '../types';
 import { translations, Language } from '../i18n/translations';
 
@@ -76,6 +78,11 @@ export const ClaimLab: React.FC<ClaimLabProps> = ({ onSelectClaimForBelief, lang
         result = await verifyPublicClaimsCloud(inputText);
       }
       setAnalysis(result);
+      if (result?.claims) {
+        result.claims.forEach((c) => {
+          persistVerificationEvent(c.result.verdict, 'ONLY_IN_CLOUD', currentUid()).catch(() => {});
+        });
+      }
     } catch (err: any) {
       setError(err.message || "Failed to analyze claim. Please check your internet connection.");
     } finally {
@@ -269,6 +276,35 @@ export const ClaimLab: React.FC<ClaimLabProps> = ({ onSelectClaimForBelief, lang
         <div className="p-4 bg-red-100 border-2 border-red-900 rounded-xl text-red-950 text-sm font-bold flex items-center gap-3 shadow-[2px_2px_0px_0px_#7f1d1d]">
           <XCircle className="w-5 h-5 flex-shrink-0" />
           <span>{error}</span>
+        </div>
+      )}
+
+      {/* Loading Skeleton */}
+      {isLoading && (
+        <div className="brutal-card p-6 space-y-4 animate-fade-in bg-white">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-forest-900/10">
+            <div className="flex items-center gap-2">
+              <RefreshCw className="w-4 h-4 animate-spin text-forest-800" />
+              <span className="text-xs font-black uppercase tracking-wider text-forest-900">
+                {lang === 'hi' ? 'क्लाउड AI सत्यापन जारी है...' : 'Verifying Claims with Firebase Cloud AI...'}
+              </span>
+            </div>
+            <span className="brutal-badge bg-sky-100 text-sky-950 border-sky-900">
+              ONLY_IN_CLOUD
+            </span>
+          </div>
+
+          <div className="space-y-3">
+            <div className="h-6 skeleton-shimmer rounded-lg w-3/4 border border-forest-900/20" />
+            <div className="h-4 skeleton-shimmer rounded-lg w-full border border-forest-900/20" />
+            <div className="h-4 skeleton-shimmer rounded-lg w-5/6 border border-forest-900/20" />
+          </div>
+
+          <div className="p-4 bg-cream-50 rounded-xl border-2 border-forest-900/20 space-y-2">
+            <div className="h-4 skeleton-shimmer rounded w-1/3" />
+            <div className="h-3 skeleton-shimmer rounded w-full" />
+            <div className="h-3 skeleton-shimmer rounded w-2/3" />
+          </div>
         </div>
       )}
 
