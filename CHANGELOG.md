@@ -5,6 +5,27 @@
 
 ---
 
+## [2026-11-28] - 100% Hindi AI Generation, Dual-Language TTS, and Vibrant Visual Palette
+
+### 1. What Was Done
+- **100% Hindi AI Output Generation Across the Entire Platform**:
+  - Passed `lang` ('en' | 'hi') to `verifyPublicClaimsCloud`, `verifyPublicImageCloud`, `exploreBeliefOnDevice`, and `evaluateTeachBackOnDevice`.
+  - Upgraded all AI system prompts and generation instructions: when Hindi is active, the models strictly generate all claim rationales, caveats, clinician next steps, empathetic reflections, and teach-back questions in authentic Devanagari Hindi.
+  - Implemented 100% authentic Hindi clinical fallbacks for diabetes (okra water), hypertension (rock salt), and general health claims so non-English users always receive natural, culturally respectful Hindi output.
+- **Dual-Language On-Device Speech Synthesis (TTS)**:
+  - Re-architected `src/services/speech/index.ts` with intelligent voice discovery matching native Hindi voices (`hi-IN`, Google हिन्दी, Microsoft Hemant/Kalpana, Madhur/Swara) and premium natural English voices.
+  - Added on-device audio narration buttons to **Claim Lab** (listen to verified claim verdicts) and **Belief Engine** (listen to empathetic reflection and teach-back questions), in addition to **Evidence Stories**.
+  - Added audio text sanitization (stripping markdown syntax and URLs) and prevented Chrome's utterance garbage-collection cancellation bug.
+- **Vibrant, Visually Appealing Bio-Clinical Aesthetics**:
+  - Transformed the flat grayish canvas into an awards-worthy atmospheric bio-clinical canvas with layered radial mesh gradients (soft emerald, sky cyan, and sunlight amber).
+  - Added the signature dual-domain gradient hairline (`bg-gradient-to-r from-emerald-500 via-teal-400 to-sky-500`) to the header.
+  - Elevated the landing hero headline with a radiant gradient text effect (`bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 bg-clip-text text-transparent`).
+  - Added jewel-toned card accents, glowing active tab rings, and smooth hover illumination.
+- **Verification**:
+  - `npm run build` (`tsc -b && vite build`) passed with code 0.
+
+---
+
 ## [2026-11-28] - Navbar Static Redesign, App Check 401 Fix, On-Device Fallback, Belief Engine Contrast & Custom Family Bridge
 
 ### 1. What Was Done

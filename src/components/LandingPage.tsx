@@ -174,14 +174,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               {isHindi ? (
                 <>
                   स्वास्थ्य सत्य,<br />
-                  <span className="text-emerald-700">
+                  <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 bg-clip-text text-transparent">
                     गोपनीयता के साथ।
                   </span>
                 </>
               ) : (
                 <>
                   Health Truth,<br />
-                  <span className="text-emerald-700">
+                  <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 bg-clip-text text-transparent">
                     Engineered for Privacy.
                   </span>
                 </>

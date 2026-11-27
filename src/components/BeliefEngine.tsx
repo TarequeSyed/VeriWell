@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Lock, HeartHandshake, Sparkles, HelpCircle, CheckCircle2, AlertCircle, RefreshCw, Send, Shield } from 'lucide-react';
+import { Lock, HeartHandshake, Sparkles, HelpCircle, CheckCircle2, AlertCircle, RefreshCw, Send, Shield, Volume2, VolumeX } from 'lucide-react';
 import { exploreBeliefOnDevice, evaluateTeachBackOnDevice } from '../services/ai/router';
+import { speakTextLocally, stopSpeakingLocally } from '../services/speech';
 import { BeliefResult, TeachBackResult } from '../types';
 import { translations, Language } from '../i18n/translations';
 
@@ -40,8 +41,16 @@ export const BeliefEngine: React.FC<BeliefEngineProps> = ({
   const [teachBackAnswer, setTeachBackAnswer] = useState("");
   const [isEvaluatingTeachBack, setIsEvaluatingTeachBack] = useState(false);
   const [teachBackResult, setTeachBackResult] = useState<TeachBackResult | null>(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
+
+  // Clean up speech on unmount
+  useEffect(() => {
+    return () => {
+      stopSpeakingLocally();
+    };
+  }, []);
 
   useEffect(() => {
     if (initialClaimText) setClaimText(initialClaimText);
@@ -51,7 +60,24 @@ export const BeliefEngine: React.FC<BeliefEngineProps> = ({
     else setEvidenceExcerpt(defaultEvidence);
 
     setUserConcern(defaultConcern);
+    stopSpeakingLocally();
+    setIsSpeaking(false);
   }, [lang, initialClaimText, initialEvidenceExcerpt]);
+
+  const handleToggleSpeech = () => {
+    if (isSpeaking) {
+      stopSpeakingLocally();
+      setIsSpeaking(false);
+    } else if (beliefResult) {
+      const fullText = `${beliefResult.reply}. ${lang === 'hi' ? 'चिंतन प्रश्न' : 'Reflection question'}: ${beliefResult.teachBackQuestion}`;
+      speakTextLocally(
+        fullText,
+        () => setIsSpeaking(true),
+        () => setIsSpeaking(false),
+        lang === 'hi' ? 'hi-IN' : 'en-US'
+      );
+    }
+  };
 
   const handleAnalyzeConcern = async () => {
     if (!userConcern.trim()) return;
@@ -59,9 +85,11 @@ export const BeliefEngine: React.FC<BeliefEngineProps> = ({
     setError(null);
     setBeliefResult(null);
     setTeachBackResult(null);
+    stopSpeakingLocally();
+    setIsSpeaking(false);
 
     try {
-      const result = await exploreBeliefOnDevice(userConcern, claimText, evidenceExcerpt);
+      const result = await exploreBeliefOnDevice(userConcern, claimText, evidenceExcerpt, lang);
       setBeliefResult(result);
     } catch (err: any) {
       setError(err.message || "On-device analysis error. Ensure Chrome on-device Gemini Nano is enabled.");
@@ -78,7 +106,8 @@ export const BeliefEngine: React.FC<BeliefEngineProps> = ({
       const result = await evaluateTeachBackOnDevice(
         teachBackAnswer,
         evidenceExcerpt,
-        beliefResult.teachBackQuestion
+        beliefResult.teachBackQuestion,
+        lang
       );
       setTeachBackResult(result);
     } catch (err: any) {
@@ -179,17 +208,37 @@ export const BeliefEngine: React.FC<BeliefEngineProps> = ({
       {/* Belief Engine Reflection Results */}
       {beliefResult && (
         <div className="space-y-6">
-          <div className="brutal-card p-6 space-y-4">
-            <div className="flex items-center justify-between gap-2 pb-3 border-b-2 border-forest-900/10">
+          <div className="brutal-card p-6 space-y-4 bg-gradient-to-br from-white via-emerald-50/50 to-teal-50/20 border-2 border-forest-900 shadow-[4px_4px_0px_0px_#064E3B]">
+            <div className="flex items-center justify-between gap-2 pb-3 border-b-2 border-forest-900/10 flex-wrap">
               <span className="eyebrow text-forest-900 flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4 text-emerald-600" /> {t.reflectionTitle}
               </span>
-              <span className="brutal-badge bg-emerald-100 text-emerald-950 border-forest-900 font-bold">
-                {t.concernBadge} {beliefResult.concern.replace('_', ' ').toUpperCase()}
-              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleToggleSpeech}
+                  className="px-3 py-1 rounded-xl border-2 border-forest-900 bg-white text-forest-900 hover:bg-emerald-50 hover:text-emerald-950 text-xs font-bold flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#0F172A] transition-all"
+                  title={lang === 'hi' ? 'सहानुभूतिपूर्ण सलाह सुनें' : 'Listen aloud to the empathetic advice'}
+                >
+                  {isSpeaking ? (
+                    <>
+                      <VolumeX className="w-3.5 h-3.5 text-rose-600 animate-pulse" />
+                      <span>{lang === 'hi' ? 'आवाज़ रोकें' : 'Stop Narration'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Volume2 className="w-3.5 h-3.5 text-emerald-700" />
+                      <span>{lang === 'hi' ? 'ऑडियो सुनें (TTS)' : 'Listen Aloud (TTS)'}</span>
+                    </>
+                  )}
+                </button>
+                <span className="brutal-badge bg-emerald-100 text-emerald-950 border-emerald-900 font-bold">
+                  {t.concernBadge} {beliefResult.concern.replace('_', ' ').toUpperCase()}
+                </span>
+              </div>
             </div>
 
-            <p className="body-lead font-bold text-forest-950">
+            <p className="body-lead font-bold text-forest-950 leading-relaxed">
               "{beliefResult.reply}"
             </p>
 
