@@ -57,14 +57,14 @@ export const HybridMonitor: React.FC<HybridMonitorProps> = ({ lang = 'en' }) => 
       {/* Top Telemetry Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* On-Device Status */}
-        <div className="brutal-card p-5 space-y-2">
+        <div className="brutal-card p-5 space-y-2 shadow-[3px_3px_0px_0px_#0A221C]">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-black uppercase tracking-wider text-forest-700">{t.localNanoTitle}</span>
-            <Cpu className="w-5 h-5 text-forest-900" />
+            <span className="eyebrow">{t.localNanoTitle}</span>
+            <Cpu className="w-5 h-5 text-emerald-800" />
           </div>
           <div className="flex items-center gap-2">
             <span className={`w-3 h-3 rounded-full border border-forest-900 ${deviceStatus === 'available' ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
-            <span className="text-xl font-black text-forest-900 capitalize">{deviceStatus}</span>
+            <span className="text-xl font-mono font-black text-forest-900 capitalize">{deviceStatus}</span>
           </div>
           <p className="text-[11px] font-mono text-forest-700 font-medium">
             {t.promptApiSub}
@@ -72,14 +72,14 @@ export const HybridMonitor: React.FC<HybridMonitorProps> = ({ lang = 'en' }) => 
         </div>
 
         {/* Cloud AI Status */}
-        <div className="brutal-card p-5 space-y-2">
+        <div className="brutal-card p-5 space-y-2 shadow-[3px_3px_0px_0px_#0A221C]">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-black uppercase tracking-wider text-forest-700">{t.cloudAiTitle}</span>
-            <Cloud className="w-5 h-5 text-forest-900" />
+            <span className="eyebrow">{t.cloudAiTitle}</span>
+            <Cloud className="w-5 h-5 text-sky-800" />
           </div>
           <div className="flex items-center gap-2">
             <span className={`w-3 h-3 rounded-full border border-forest-900 ${(!isSimulatedOffline && isOnline) ? 'bg-emerald-500' : 'bg-red-500'}`} />
-            <span className="text-xl font-black text-forest-900">{(!isSimulatedOffline && isOnline) ? (lang === 'hi' ? 'कनेक्टेड' : 'Connected') : (lang === 'hi' ? 'ऑफलाइन' : 'Offline')}</span>
+            <span className="text-xl font-mono font-black text-forest-900">{(!isSimulatedOffline && isOnline) ? (lang === 'hi' ? 'कनेक्टेड' : 'Connected') : (lang === 'hi' ? 'ऑफलाइन' : 'Offline')}</span>
           </div>
           <p className="text-[11px] font-mono text-forest-700 font-medium">
             {t.cloudAiSub}
@@ -87,12 +87,12 @@ export const HybridMonitor: React.FC<HybridMonitorProps> = ({ lang = 'en' }) => 
         </div>
 
         {/* Total Inferences */}
-        <div className="brutal-card p-5 space-y-2">
+        <div className="brutal-card p-5 space-y-2 shadow-[3px_3px_0px_0px_#0A221C]">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-black uppercase tracking-wider text-forest-700">{t.inferencesTitle}</span>
+            <span className="eyebrow">{t.inferencesTitle}</span>
             <Activity className="w-5 h-5 text-forest-900" />
           </div>
-          <div className="text-2xl font-black text-forest-900">
+          <div className="text-3xl font-mono font-black text-forest-900">
             {traces.length}
           </div>
           <p className="text-[11px] font-mono text-forest-700 font-medium">
@@ -101,9 +101,9 @@ export const HybridMonitor: React.FC<HybridMonitorProps> = ({ lang = 'en' }) => 
         </div>
 
         {/* Judge Testing: Offline Simulator Toggle */}
-        <div className="brutal-card p-5 space-y-2 flex flex-col justify-between">
+        <div className="brutal-card p-5 space-y-2 flex flex-col justify-between shadow-[3px_3px_0px_0px_#0A221C]">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-black uppercase tracking-wider text-forest-700">{t.offlineSimTitle}</span>
+            <span className="eyebrow">{t.offlineSimTitle}</span>
             {isSimulatedOffline ? <WifiOff className="w-5 h-5 text-red-600" /> : <Wifi className="w-5 h-5 text-emerald-700" />}
           </div>
           <div>
@@ -113,7 +113,7 @@ export const HybridMonitor: React.FC<HybridMonitorProps> = ({ lang = 'en' }) => 
               className={`w-full py-2 px-3 rounded-xl text-xs font-black border-2 border-forest-950 transition-all ${
                 isSimulatedOffline
                   ? 'bg-red-600 text-white shadow-[2px_2px_0px_0px_#450a0a]'
-                  : 'bg-sage-200 text-forest-950 shadow-[2px_2px_0px_0px_#0F2923] hover:bg-sage-300'
+                  : 'bg-emerald-300 text-forest-950 shadow-[2px_2px_0px_0px_#0A221C] hover:bg-emerald-400'
               }`}
             >
               {isSimulatedOffline ? t.offlineSimButtonOn : t.offlineSimButtonOff}
@@ -126,10 +126,10 @@ export const HybridMonitor: React.FC<HybridMonitorProps> = ({ lang = 'en' }) => 
       </div>
 
       {/* Hardware & Diagnostics Details */}
-      <div className="brutal-card p-6 space-y-4">
+      <div className="brutal-card p-6 space-y-4 shadow-[4px_4px_0px_0px_#0A221C]">
         <div className="flex items-center justify-between pb-3 border-b-2 border-forest-900/10">
-          <h3 className="font-black text-forest-900 text-lg flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-forest-900" /> {t.archTitle}
+          <h3 className="heading-md flex items-center gap-2">
+            <ShieldCheck className="w-5 h-5 text-emerald-800" /> {t.archTitle}
           </h3>
           <button
             type="button"
@@ -142,20 +142,20 @@ export const HybridMonitor: React.FC<HybridMonitorProps> = ({ lang = 'en' }) => 
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-          <div className="p-4 bg-cream-50 rounded-xl border-2 border-forest-900 space-y-1.5 shadow-[2px_2px_0px_0px_#0F2923]">
-            <div className="font-black text-forest-950 text-sm flex items-center gap-1.5">
+          <div className="p-4 bg-emerald-50/70 rounded-xl border-2 border-forest-900 space-y-1.5 shadow-[2px_2px_0px_0px_#0A221C]">
+            <div className="heading-sm flex items-center gap-1.5 text-forest-950">
               <Cpu className="w-4 h-4 text-emerald-800" /> {t.privateDomainTitle}
             </div>
-            <p className="text-forest-800 font-medium leading-relaxed">
+            <p className="body-sm text-forest-800">
               {t.privateDomainDesc}
             </p>
           </div>
 
-          <div className="p-4 bg-cream-50 rounded-xl border-2 border-forest-900 space-y-1.5 shadow-[2px_2px_0px_0px_#0F2923]">
-            <div className="font-black text-forest-950 text-sm flex items-center gap-1.5">
+          <div className="p-4 bg-sky-50/70 rounded-xl border-2 border-forest-900 space-y-1.5 shadow-[2px_2px_0px_0px_#0A221C]">
+            <div className="heading-sm flex items-center gap-1.5 text-forest-950">
               <Cloud className="w-4 h-4 text-sky-800" /> {t.publicDomainTitle}
             </div>
-            <p className="text-forest-800 font-medium leading-relaxed">
+            <p className="body-sm text-forest-800">
               {t.publicDomainDesc}
             </p>
           </div>
@@ -163,8 +163,8 @@ export const HybridMonitor: React.FC<HybridMonitorProps> = ({ lang = 'en' }) => 
       </div>
 
       {/* Live Trace Logs */}
-      <div className="brutal-card p-6 space-y-4">
-        <h3 className="font-black text-forest-900 text-lg flex items-center gap-2 pb-3 border-b-2 border-forest-900/10">
+      <div className="brutal-card p-6 space-y-4 shadow-[4px_4px_0px_0px_#0A221C]">
+        <h3 className="heading-md flex items-center gap-2 pb-3 border-b-2 border-forest-900/10">
           <Clock className="w-5 h-5 text-forest-900" /> {t.liveTelemetryTitle}
         </h3>
 

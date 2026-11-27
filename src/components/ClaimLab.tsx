@@ -124,12 +124,12 @@ export const ClaimLab: React.FC<ClaimLabProps> = ({ onSelectClaimForBelief, lang
       {/* Intro banner */}
       <div className="brutal-card p-6">
         <div className="flex items-start gap-4">
-          <div className="p-3 bg-forest-900 text-cream-50 rounded-xl border-2 border-forest-950 shadow-[2px_2px_0px_0px_#0F2923] mt-1">
-            <ShieldCheck className="w-6 h-6" />
+          <div className="p-3 bg-forest-900 text-cream-50 rounded-xl border-2 border-forest-950 shadow-[2px_2px_0px_0px_#0A221C] mt-1">
+            <ShieldCheck className="w-6 h-6 text-emerald-400" />
           </div>
           <div className="space-y-1">
-            <h2 className="text-2xl font-black text-forest-900 tracking-tight">{t.title}</h2>
-            <p className="text-forest-800 text-sm leading-relaxed font-medium">
+            <h2 className="heading-xl">{t.title}</h2>
+            <p className="body-base">
               {t.description}
             </p>
           </div>
@@ -137,7 +137,7 @@ export const ClaimLab: React.FC<ClaimLabProps> = ({ onSelectClaimForBelief, lang
 
         {/* Quick sample chips */}
         <div className="mt-5 pt-4 border-t-2 border-forest-900/10">
-          <div className="text-xs font-black uppercase tracking-wider text-forest-800 mb-2">{t.trySample}</div>
+          <div className="eyebrow mb-2">{t.trySample}</div>
           <div className="flex flex-wrap gap-2">
             {sampleForwards.map((s, idx) => (
               <button
@@ -311,13 +311,13 @@ export const ClaimLab: React.FC<ClaimLabProps> = ({ onSelectClaimForBelief, lang
       {/* Results view */}
       {analysis && (
         <div className="space-y-6">
-          <div className="brutal-card p-6 bg-sage-100">
-            <h3 className="font-black text-forest-900 text-lg mb-1">{t.summaryTitle}</h3>
-            <p className="text-forest-900 text-sm leading-relaxed font-medium">{analysis.overallSummary}</p>
+          <div className="brutal-card p-6 bg-sage-100/80">
+            <h3 className="heading-md mb-1">{t.summaryTitle}</h3>
+            <p className="body-base text-forest-900">{analysis.overallSummary}</p>
           </div>
 
           <div className="space-y-4">
-            <h3 className="font-black text-forest-900 text-xl tracking-tight">{t.individualTitle} ({analysis.claims.length})</h3>
+            <h3 className="heading-lg tracking-tight">{t.individualTitle} ({analysis.claims.length})</h3>
             
             {analysis.claims.map((claim) => (
               <div 
@@ -326,7 +326,7 @@ export const ClaimLab: React.FC<ClaimLabProps> = ({ onSelectClaimForBelief, lang
               >
                 <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b-2 border-forest-900/10">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-black uppercase tracking-wider text-forest-700">{t.extractedClaim}</span>
+                    <span className="eyebrow text-forest-700">{t.extractedClaim}</span>
                     <span className="font-bold text-forest-900 text-sm">{claim.text}</span>
                   </div>
                   {getVerdictBadge(claim.result.verdict)}

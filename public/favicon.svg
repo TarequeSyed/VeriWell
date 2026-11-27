@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <!-- Neo-Brutalist Bio-Shield Container -->
+  <rect x="3" y="3" width="42" height="42" rx="12" fill="#0A221C" stroke="#071914" stroke-width="2"/>
+  <rect x="5" y="5" width="38" height="38" rx="10" fill="#0D2E26" stroke="#10B981" stroke-width="1" stroke-opacity="0.35"/>
+  
+  <!-- Bio-Pulse V Emblem: Cardiac pulse line transitioning into a verified clinical checkmark -->
+  <path d="M10 25h4l3-7 7 19 6-18 8 10" stroke="url(#mintGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Neural Intelligence Verification Node -->
+  <circle cx="38" cy="19" r="3" fill="#34D399" stroke="#0A221C" stroke-width="1"/>
+
+  <defs>
+    <linearGradient id="mintGrad" x1="10" y1="25" x2="38" y2="19" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10B981"/>
+      <stop offset="1" stop-color="#34D399"/>
+    </linearGradient>
+  </defs>
+</svg>

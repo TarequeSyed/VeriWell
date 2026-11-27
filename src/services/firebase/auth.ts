@@ -77,6 +77,31 @@ export async function signInAsJudgeDemo(): Promise<User> {
 }
 
 /**
+ * 1-Click Instant Demo Access for General Users / Patients
+ * Uses Firebase Anonymous Auth and attaches "Guest Patient (Demo)" persona
+ */
+export async function signInAsGuestDemo(): Promise<User> {
+  try {
+    let currentUser = auth.currentUser;
+    if (!currentUser) {
+      const cred = await signInAnonymously(auth);
+      currentUser = cred.user;
+    }
+    try {
+      await updateProfile(currentUser, {
+        displayName: 'Guest Patient (Demo)',
+      });
+    } catch {
+      // Non-fatal if profile update fails on anon
+    }
+    return currentUser;
+  } catch (err: any) {
+    console.error('Guest Demo Sign-in Error:', err);
+    throw err;
+  }
+}
+
+/**
  * Sign out current user
  */
 export async function signOutUser(): Promise<void> {

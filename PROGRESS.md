@@ -71,6 +71,16 @@
   - `AuthModal.tsx` modal dialog supporting Google Sign-In (`signInWithGoogle`) and 1-Click Judge & Evaluator Demo access (`signInAsJudgeDemo`)
   - Seamless Judge Demo bypass in header and hero for frictionless hackathon review
   - User session display and logout lifecycle integration in `App.tsx`
+- [x] **Poppins Unified Typography & Bio-Clinical Signature Palette**:
+  - Google Font **Poppins** (weights 300 to 900) integrated across entire app with Latin + Devanagari Hindi support
+  - Unified typographic hierarchy scale (`.heading-display`, `.heading-xl`, `.heading-lg`, `.heading-md`, `.heading-sm`, `.eyebrow`, `.body-lead`, `.body-base`, `.body-sm`)
+  - Distinctive Awwwards-winning visual signature palette: warm linen parchment canvas (`#F4F2E9` / `#FAF9F5`), deep obsidian forest structure (`#0A221C`), bio-luminescent on-device emerald (`#10B981` / `#34D399`), and cloud sky (`#0284C7`)
+  - Applied consistently across all 10 views (`App`, `LandingPage`, `ClaimLab`, `BeliefEngine`, `FamilyBridge`, `EvidenceStories`, `HybridMonitor`, `PrivacyBoundaryVisualizer`, `Hero`, `AuthModal`)
+- [x] **Standout Logo, Favicon, Zero-Emoji Polish & Startup Dual-Navbar Architecture**:
+  - Custom geometric bio-shield SVG logo mark and `public/favicon.svg` featuring clinical pulse transitioning into verified checkmark
+  - Complete emoji purge across all codebase modules, replaced with sharp Lucide SVG icons
+  - Authentic Startup vs Clinical Workspace dual-navbar architecture: marketing links on front page, internal feature tabs revealed only after entering workspace
+  - Dual demo authentication: 1-Click instant Judge Demo bypass + 1-Click Guest Patient Demo + Google OAuth sign-in
 
 ---
 
@@ -78,7 +88,7 @@
 - `LanguageModel.availability()` evaluated in Chrome DevTools: Returned `'available'`.
 - `npx -y firebase-tools@latest --version`: Returned `15.36.0`.
 - `npm run typecheck`: Exit code 0 (TypeScript verified with 0 errors).
-- `npm run build`: Exit code 0 (1625 modules transformed, bundle emitted into `dist/` in 11.96s).
+- `npm run build`: Exit code 0 (1626 modules transformed, bundle emitted into `dist/` in 8.50s).
 
 ---
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { X, Sparkles, Shield, Lock, AlertCircle, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { signInWithGoogle, signInAsJudgeDemo } from '../services/firebase/auth';
+import { X, Shield, Lock, AlertCircle, ArrowRight, CheckCircle2, User as UserIcon, Zap } from 'lucide-react';
+import { signInWithGoogle, signInAsJudgeDemo, signInAsGuestDemo } from '../services/firebase/auth';
 import { Language } from '../i18n/translations';
 
 interface AuthModalProps {
@@ -12,7 +12,7 @@ interface AuthModalProps {
 
 export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess, lang }) => {
   const isHindi = lang === 'hi';
-  const [isLoading, setIsLoading] = useState<'google' | 'judge' | null>(null);
+  const [isLoading, setIsLoading] = useState<'google' | 'judge' | 'guest' | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
@@ -31,6 +31,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
     }
   };
 
+  const handleGuestLogin = async () => {
+    setIsLoading('guest');
+    setError(null);
+    try {
+      await signInAsGuestDemo();
+      onSuccess();
+      onClose();
+    } catch (err: any) {
+      setError(err.message || 'Guest demo login failed. Please try again.');
+    } finally {
+      setIsLoading(null);
+    }
+  };
+
   const handleGoogleLogin = async () => {
     setIsLoading('google');
     setError(null);
@@ -42,9 +56,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
       if (err.code === 'auth/popup-closed-by-user') {
         setError(isHindi ? 'लॉगिन विंडो बंद कर दी गई थी।' : 'Sign-in popup was closed before completion.');
       } else if (err.code === 'auth/popup-blocked') {
-        setError(isHindi ? 'ब्राउज़र पॉप-अप अवरुद्ध हो गया। कृपया अनुमति दें या जज डेमो का उपयोग करें।' : 'Browser popup was blocked. Please allow popups or use 1-Click Judge Demo.');
+        setError(isHindi ? 'ब्राउज़र पॉप-अप अवरुद्ध हो गया। कृपया अनुमति दें या 1-क्लिक डेमो का उपयोग करें।' : 'Browser popup was blocked. Please allow popups or use 1-Click Demo.');
       } else {
-        setError(err.message || 'Google sign-in failed. You can use 1-Click Judge Demo instead.');
+        setError(err.message || 'Google sign-in failed. You can use 1-Click Demo instead.');
       }
     } finally {
       setIsLoading(null);
@@ -53,7 +67,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-forest-950/70 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-md brutal-card bg-white p-6 sm:p-8 space-y-6 shadow-[8px_8px_0px_0px_#0F2923]">
+      <div className="relative w-full max-w-md brutal-card bg-white p-6 sm:p-8 space-y-6 shadow-[8px_8px_0px_0px_#0A221C]">
         {/* Close Button */}
         <button
           type="button"
@@ -67,23 +81,23 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         {/* Modal Header */}
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <span className="brutal-badge bg-sage-200 text-forest-950 border-forest-900">
+            <span className="brutal-badge bg-emerald-200 text-emerald-950 border-forest-900">
               {isHindi ? 'सुरक्षित एक्सेस' : 'Secure Access'}
             </span>
-            <span className="brutal-badge bg-forest-900 text-cream-50 border-forest-950 flex items-center gap-1">
+            <span className="brutal-badge bg-forest-950 text-cream-50 border-forest-950 flex items-center gap-1">
               <Lock className="w-3 h-3" />
               {isHindi ? 'गोपनीयता प्रथम' : 'Privacy-First'}
             </span>
           </div>
 
-          <h3 className="text-2xl font-black text-forest-950 tracking-tight leading-tight">
-            {isHindi ? 'VeriWell डेमो में प्रवेश करें' : 'Unlock the VeriWell Experience'}
+          <h3 className="heading-xl">
+            {isHindi ? 'VeriWell में प्रवेश करें' : 'Enter VeriWell Workspace'}
           </h3>
 
-          <p className="text-xs text-forest-800 font-medium leading-relaxed">
+          <p className="body-sm text-forest-800 leading-relaxed">
             {isHindi
               ? 'हाइब्रिड AI आर्किटेक्चर (जेमिनी नैनो + फायरबेस एआई लॉजिक) को लाइव टेस्ट करें।'
-              : 'Choose how you want to test our dual-domain hybrid AI architecture.'}
+              : 'Experience on-device Gemini Nano paired with Firebase AI Logic.'}
           </p>
         </div>
 
@@ -95,35 +109,35 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
           </div>
         )}
 
-        {/* Option 1: 1-Click Judge & Hackathon Evaluator Access (Highlighted) */}
-        <div className="p-5 bg-sage-100 border-2 border-forest-900 rounded-xl space-y-3 shadow-[3px_3px_0px_0px_#0F2923]">
+        {/* Option 1: 1-Click Judge & Hackathon Evaluator Access (Primary) */}
+        <div className="p-5 bg-emerald-50/80 border-2 border-forest-900 rounded-xl space-y-3 shadow-[3px_3px_0px_0px_#0A221C]">
           <div className="flex items-center justify-between">
-            <span className="brutal-badge bg-forest-900 text-cream-50 text-[10px] border-forest-950 flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-amber-300" />
+            <span className="brutal-badge bg-forest-950 text-cream-50 text-[10px] border-forest-950 flex items-center gap-1 font-mono">
+              <Zap className="w-3 h-3 text-emerald-400 fill-emerald-400" />
               {isHindi ? 'जज व रिव्यूअर हेतु' : 'FOR HACKATHON JUDGES'}
             </span>
-            <span className="text-[11px] font-mono font-bold text-forest-700">1-Click</span>
+            <span className="text-[11px] font-mono font-bold text-forest-700">1-Click Bypass</span>
           </div>
 
           <div>
-            <div className="font-black text-forest-950 text-base">
+            <div className="heading-sm text-forest-950">
               {isHindi ? 'त्वरित जज डेमो एक्सेस' : 'Instant Judge Demo Access'}
             </div>
-            <p className="text-xs text-forest-800 font-medium mt-0.5">
+            <p className="body-sm text-forest-800 mt-0.5">
               {isHindi
                 ? 'बिना किसी साइनअप के तुरंत सभी 5 मॉड्यूल्स और टेलीमेट्री का लाइव टेस्ट करें।'
-                : 'Zero registration or credentials required. Instantly unlock the complete interactive suite.'}
+                : 'Zero credentials required. Instantly unlocks all 5 modules, telemetry, and offline simulation.'}
             </p>
           </div>
 
-          <ul className="text-[11px] text-forest-800 font-medium space-y-1">
+          <ul className="text-[11px] text-forest-900 font-medium space-y-1.5">
             <li className="flex items-center gap-1.5">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 flex-shrink-0" />
               <span>{isHindi ? 'सभी 5 टूल्स और ऑफलाइन सिम्युलेटर अनलॉक' : 'All 5 tools + offline simulator unlocked'}</span>
             </li>
             <li className="flex items-center gap-1.5">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 flex-shrink-0" />
-              <span>{isHindi ? 'जेमिनी नैनो ऑन-डिवाइस सत्यापन सक्रिय' : 'Live on-device Gemini Nano evaluation'}</span>
+              <span>{isHindi ? 'जेमिनी नैनो ऑन-डिवाइस मूल्यांकन सक्रिय' : 'Live on-device Gemini Nano evaluation'}</span>
             </li>
           </ul>
 
@@ -131,13 +145,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             type="button"
             onClick={handleJudgeLogin}
             disabled={isLoading !== null}
-            className="w-full brutal-button py-2.5 px-4 text-xs flex items-center justify-center gap-2 mt-1"
+            className="w-full brutal-button-emerald py-3 px-4 text-xs flex items-center justify-center gap-2 mt-1 shadow-[2px_2px_0px_0px_#0A221C]"
           >
             {isLoading === 'judge' ? (
               <span>{isHindi ? 'एक्सेस तैयार हो रहा है...' : 'Launching Demo Session...'}</span>
             ) : (
               <>
-                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                <Zap className="w-3.5 h-3.5 text-forest-950 fill-forest-950" />
                 <span>{isHindi ? 'डेमो शुरू करें (1-क्लिक)' : 'Launch 1-Click Judge Demo'}</span>
                 <ArrowRight className="w-3.5 h-3.5 ml-auto" />
               </>
@@ -153,16 +167,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
           </span>
         </div>
 
-        {/* Option 2: Sign in with Google */}
-        <div className="space-y-3">
+        {/* General User Options */}
+        <div className="space-y-2.5">
+          {/* Option 2: Sign in with Google */}
           <button
             type="button"
             onClick={handleGoogleLogin}
             disabled={isLoading !== null}
-            className="w-full brutal-button-secondary py-3 px-4 text-xs flex items-center justify-center gap-3"
+            className="w-full brutal-button-secondary py-2.5 px-4 text-xs flex items-center justify-center gap-3 shadow-[2px_2px_0px_0px_#0A221C]"
           >
-            {/* Google SVG Logo */}
-            <svg className="w-4 h-4" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
               <path
                 fill="#4285F4"
                 d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"
@@ -183,7 +197,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             <span>
               {isLoading === 'google'
                 ? (isHindi ? 'Google से जुड़ रहे हैं...' : 'Connecting to Google...')
-                : (isHindi ? 'Google से साइन इन करें' : 'Sign in with Google')}
+                : (isHindi ? 'Google खाते से साइन इन करें' : 'Sign In with Google')}
+            </span>
+          </button>
+
+          {/* Option 3: Continue as Guest Demo (No OAuth needed) */}
+          <button
+            type="button"
+            onClick={handleGuestLogin}
+            disabled={isLoading !== null}
+            className="w-full bg-cream-50 hover:bg-sage-100 text-forest-900 border-2 border-forest-900 rounded-xl py-2 px-4 text-xs font-bold flex items-center justify-center gap-2 transition-colors shadow-[2px_2px_0px_0px_#0A221C]"
+          >
+            <UserIcon className="w-3.5 h-3.5 text-forest-700" />
+            <span>
+              {isLoading === 'guest'
+                ? (isHindi ? 'अतिथि सत्र शुरू हो रहा है...' : 'Starting Guest Session...')
+                : (isHindi ? 'अतिथि (मरीज) डेमो के रूप में देखें' : 'Explore as Guest Patient Demo')}
             </span>
           </button>
         </div>

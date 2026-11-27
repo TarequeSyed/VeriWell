@@ -161,3 +161,115 @@
 - **Bug 2: Unused icon imports in `LandingPage.tsx`**:
   - *Cause*: `Volume2`, `WifiOff`, `Layers`, `Heart`, `ChevronRight`, `ExternalLink` triggered `TS6133: declared but never read`.
   - *Fix*: Cleaned up unused imports from `lucide-react`.
+
+---
+
+## [2026-11-27] - Poppins Unified Typography System & Awwwards Signature Bio-Clinical Palette
+
+### 1. What Was Done
+- **Google Fonts Typography System Overhaul**:
+  - Replaced legacy Inter/Manrope font imports with **Poppins** (weights 300, 400, 500, 600, 700, 800, 900) alongside **JetBrains Mono** (weights 400, 500, 600, 700, 800) in `index.html`.
+  - Ensured native support for both Latin and Devanagari Hindi characters for seamless bilingual rendering across English and हिन्दी.
+- **Strict Typographic Scale Standardization**:
+  - Formulated a cohesive typographic scale enforced across all views via standard CSS utility classes:
+    - `.heading-display`: `font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.06]` (Hero & primary punchlines)
+    - `.heading-xl`: `font-black text-2xl sm:text-3xl md:text-4xl leading-tight` (Section H2s & modal headers)
+    - `.heading-lg`: `font-black text-xl sm:text-2xl leading-snug` (Bento card titles & feature headers)
+    - `.heading-md`: `font-bold text-lg sm:text-xl leading-snug` (Card subheadings & module labels)
+    - `.heading-sm`: `font-bold text-base leading-snug` (Item titles & action labels)
+    - `.eyebrow`: `font-mono text-[11px] font-black uppercase tracking-widest text-forest-700` (Category pills & architecture markers)
+    - `.body-lead`: `font-normal text-base sm:text-lg md:text-xl leading-relaxed text-forest-800` (Editorial introductory paragraphs)
+    - `.body-base`: `font-normal text-sm sm:text-base leading-relaxed text-forest-800` (Standard informative body copy)
+    - `.body-sm`: `font-normal text-xs sm:text-sm leading-normal text-forest-700` (Secondary captions & citations)
+- **Awwwards-Winning Signature Palette: Bio-Clinical Emerald & Warm Parchment ("The Breaking Bad Mexico Tint")**:
+  - Established an unmistakable visual signature so evaluators and judges immediately recognize VeriWell:
+    - **Warm Organic Linen / Parchment Canvas**: `#F4F2E9` (`cream-100`) and `#FAF9F5` (`cream-50`) evoking clinical stationery and tactile editorial journals.
+    - **Deep Obsidian / Forest Structure**: `#0A221C` (`forest-900`) and `#071914` (`forest-950`) providing high-contrast clinical authority and 2px borders with `#0A221C` solid offset drop shadows.
+    - **On-Device Bio-Luminescent Emerald**: `#10B981` (`emerald-500`) and `#34D399` (`emerald-400`) representing 100% on-device Gemini Nano privacy and verified clinical truth.
+    - **Atmospheric Cloud Sky**: `#0284C7` (`sky-600`) and `#E0F2FE` (`sky-100`) representing public multimodal cloud inference.
+    - **Apothecary Caution Amber**: `#D97706` (`caution-600`) for medical triage alerts and stroke warnings.
+    - **Ambient Bio Halo (`.ambient-glow` & `.bio-screen-tint`)**: Subtle organic vignette and emerald aura giving the interface a luminous, living presence.
+- **Component-Wide Refactoring Across All 10 Modules**:
+  - `src/App.tsx`: Standardized Poppins header, brand wordmark (`font-display font-black text-2xl`), tactile navigation items, and Judge Demo pill (`.brutal-button-emerald`).
+  - `src/components/LandingPage.tsx`: Standardized editorial hero, stat metrics (`font-mono font-black`), ticker ribbon, and Bento grid cards.
+  - `src/components/ClaimLab.tsx`: Updated claim inputs, sample forward chips, sanitization gate, and verdict presentation.
+  - `src/components/BeliefEngine.tsx`: Standardized on-device private chamber, empathetic reflection cards, and teach-back comprehension loop.
+  - `src/components/FamilyBridge.tsx`: Standardized WhatsApp counter-forward generator and Clinician Consultation checklist.
+  - `src/components/EvidenceStories.tsx`: Standardized swipeable evidence cards, clinical citations, and local TTS voice controls.
+  - `src/components/HybridMonitor.tsx`: Standardized telemetry gauges, latency dials (`font-mono`), hardware status indicators, and offline simulator.
+  - `src/components/PrivacyBoundaryVisualizer.tsx`: Standardized dual-domain architecture diagram, domain badges, and data flow indicators.
+  - `src/components/Hero.tsx`: Standardized hackathon hero typography and bento callouts.
+  - `src/components/AuthModal.tsx`: Standardized modal headings, Google Sign-In, and 1-Click Judge Demo buttons.
+- **Build & Verification**:
+  - Full TypeScript typecheck verified (`npm run typecheck`: exit code 0).
+  - Production build verified (`npm run build`: built in 13.30s, 0 errors).
+
+### 2. Changes Made
+- `index.html`: Added Google Fonts preconnect and stylesheet link for Poppins (weights 300-900) and JetBrains Mono (weights 400-800).
+- `tailwind.config.js`: Updated font families (`sans`, `display`, `mono`) and standardized `forest`, `emerald`, `cream`, `sage`, `sky`, `caution` color palettes.
+- `src/index.css`: Added typographic hierarchy utility classes, `.ambient-glow`, `.bio-screen-tint`, `.brutal-card`, `.brutal-button`, `.brutal-button-emerald`, and updated shadow tokens to `#0A221C`.
+- `src/App.tsx`, `src/components/LandingPage.tsx`, `src/components/ClaimLab.tsx`, `src/components/BeliefEngine.tsx`, `src/components/FamilyBridge.tsx`, `src/components/EvidenceStories.tsx`, `src/components/HybridMonitor.tsx`, `src/components/PrivacyBoundaryVisualizer.tsx`, `src/components/Hero.tsx`, `src/components/AuthModal.tsx`: Refactored all typography and color classes to standard tokens.
+
+### 3. Bugs Encountered & How They Were Fixed
+- **Bug 1: JSX Tag Mismatch (`TS1003 / TS1381 / TS17002`) in `AuthModal.tsx`**:
+  - *Cause*: Duplicate closing tags (`<span>`, `</button>`, `</div>`) accidentally pasted during single-edit replacement.
+  - *Fix*: Removed redundant lines 147–152 to restore valid JSX hierarchy.
+- **Bug 2: Unused Import (`TS6133: 'ShieldAlert' declared but never read`) in `LandingPage.tsx`**:
+  - *Cause*: Icon `ShieldAlert` remained in the import list after icon visual tuning.
+  - *Fix*: Removed `ShieldAlert` from `lucide-react` import statement.
+- **Bug 3: State Setter Type Mismatch in `AuthModal.tsx`**:
+  - *Cause*: Calling `setIsLoading(false)` on state typed as `'google' | 'judge' | null`.
+  - *Fix*: Updated call to `setIsLoading(null)`.
+
+---
+
+## [2026-11-27] - Standout Logo, Favicon, Emoji Purge & Startup Dual-Navbar Architecture
+
+### 1. What Was Done
+- **Custom Brand Identity & Standout Logo**:
+  - Designed and created `public/favicon.svg` and `src/components/VeriWellLogo.tsx`: A bold neo-brutalist bio-shield fusing a clinical pulse wave with an ascending verification checkmark in bio-emerald `#10B981` and luminous mint `#34D399` against obsidian `#0A221C`.
+  - Replaced the default Vite favicon with `/favicon.svg` in `index.html`.
+  - Implemented responsive, scalable vector logo supporting sizes `sm`, `md`, `lg`, and `xl` with optional brand typography and "Hybrid AI" badge.
+- **Total Emoji Purge (Clinical Professionalism)**:
+  - Scanned the entire codebase via AST regex verification and eliminated all tacky emojis from UI headers, buttons, ticker ribbons, and messages (e.g. `⚡`, `🔀`, `🙏`, `❤️`), replacing them with crisp Lucide SVG icons (`Zap`, `GitFork`, `Sparkles`, `ShieldCheck`). Emojis remaining in `src/`: 0.
+- **Startup Marketing vs Clinical Workspace Dual-Navbar Architecture**:
+  - Re-engineered `src/App.tsx` so the front landing page has an authentic high-growth startup feel.
+  - **Landing Mode (`viewMode === 'landing'`)**:
+    - Clean startup marketing navbar showing only the VeriWell brand logo, anchor links (`How It Works`, `Features`, `Clinical Grounding`, `Tech Specs`), language switcher (EN / हिन्दी), 1-Click Judge Demo button, and Get Started / Sign In button.
+    - Hides internal clinical console tabs (`Claim Lab`, `Belief Engine`, etc.) from the public front page.
+  - **Workspace Console Mode (`viewMode === 'workspace'`)**:
+    - Revealed only after entering (via Judge Demo, Google Auth, or Guest Patient Demo).
+    - Navbar transforms into the Clinical Workspace Console: displays active module tabs, Architecture Visualizer toggle, user profile badge (`Judge Demo [Evaluator]`), "Public Site" back toggle, and Sign Out action.
+- **Seamless Demo Testing for Both Judges and General Users**:
+  - **For Hackathon Judges**: 1-Click instant demo bypass button (in header, hero, and modal) that signs in with an evaluator persona and unlocks all 5 modules, telemetry, and offline simulator without requiring credentials.
+  - **For Users**: Sign in with Google (OAuth) OR 1-Click "Guest Patient Demo" in `AuthModal.tsx` for immediate evaluation without authorizing third-party accounts.
+  - Every Bento feature card on the landing page now directly launches into that exact workspace tool via `onLaunchFeature()`.
+- **Enriched Landing Page with Clinical Grounding and System Specifications**:
+  - Added `#clinical-evidence` section detailing WHO Type 2 Diabetes and NIDDK Renal/Hypertension guidelines and hallucination guardrails.
+  - Added `#specs` section highlighting Chrome Prompt API (Gemini Nano on ASUS TUF RTX 3050), Firebase AI Logic, sub-350ms latency, and zero-egress air-gap isolation.
+- **Build & Verification**:
+  - TypeScript typecheck verified (`npm run typecheck`: exit code 0).
+  - Production build verified (`npm run build`: built in 8.50s with 0 errors).
+
+### 2. Changes Made
+- `public/favicon.svg`: Created precision SVG bio-shield favicon.
+- `index.html`: Updated favicon link to `/favicon.svg`.
+- `src/components/VeriWellLogo.tsx`: Created reusable brand logo mark and typography component.
+- `src/App.tsx`: Implemented dual-navbar architecture (`viewMode === 'landing'` vs `viewMode === 'workspace'`), integrated `VeriWellLogo`, and wired demo handlers.
+- `src/components/LandingPage.tsx`: Added section anchors (`#how-it-works`, `#features`, `#clinical-evidence`, `#specs`), removed emojis, and wired `onLaunchFeature`.
+- `src/components/AuthModal.tsx`: Added Guest Patient Demo alongside 1-Click Judge Demo and Google Auth; removed duplicate tags and unused imports.
+- `src/services/firebase/auth.ts`: Added `signInAsGuestDemo()`.
+- `src/components/Hero.tsx` & `src/services/ai/familyBridge.ts`: Purged emojis and replaced with clinical SVG icons and dignified phrasing.
+
+### 3. Bugs Encountered & How They Were Fixed
+- **Bug 1: Duplicate JSX footer tags in `AuthModal.tsx` (`TS1128 / TS1109`)**:
+  - *Cause*: Redundant closing tags existed at lines 233–246 during component updates.
+  - *Fix*: Removed duplicate block to restore valid JSX syntax.
+- **Bug 2: Unused imports in `AuthModal.tsx` and `LandingPage.tsx` (`TS6133`)**:
+  - *Cause*: `Sparkles` in `AuthModal.tsx` and `Terminal` / `ExternalLink` in `LandingPage.tsx` were declared but unused.
+  - *Fix*: Cleaned up unused import declarations.
+- **Bug 3: Undeclared `Flame` icon in `LandingPage.tsx` (`TS2304`)**:
+  - *Cause*: `Flame` was used in the marquee banner after `lucide-react` import cleanup.
+  - *Fix*: Replaced `Flame` with `<Zap className="w-4 h-4 text-emerald-400 fill-emerald-400" />`.
+
+

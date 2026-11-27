@@ -52,12 +52,12 @@ export const FamilyBridge: React.FC<FamilyBridgeProps> = ({ lang = 'en' }) => {
       {/* Intro Banner */}
       <div className="brutal-card p-6">
         <div className="flex items-start gap-4">
-          <div className="p-3 bg-forest-900 text-cream-50 rounded-xl border-2 border-forest-950 shadow-[2px_2px_0px_0px_#0F2923] mt-1">
-            <Users className="w-6 h-6" />
+          <div className="p-3 bg-forest-900 text-cream-50 rounded-xl border-2 border-forest-950 shadow-[2px_2px_0px_0px_#0A221C] mt-1">
+            <Users className="w-6 h-6 text-emerald-400" />
           </div>
           <div className="space-y-1">
-            <h2 className="text-2xl font-black text-forest-900 tracking-tight">{t.title}</h2>
-            <p className="text-forest-800 text-sm leading-relaxed font-medium">
+            <h2 className="heading-xl">{t.title}</h2>
+            <p className="body-base">
               {t.desc}
             </p>
           </div>
@@ -66,11 +66,11 @@ export const FamilyBridge: React.FC<FamilyBridgeProps> = ({ lang = 'en' }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* WhatsApp Forward Generator */}
-        <div className="brutal-card p-6 space-y-4 flex flex-col justify-between">
+        <div className="brutal-card p-6 space-y-4 flex flex-col justify-between shadow-[4px_4px_0px_0px_#0A221C]">
           <div className="space-y-4">
             <div className="flex items-center gap-2 pb-3 border-b-2 border-forest-900/10">
-              <Share2 className="w-5 h-5 text-emerald-800" />
-              <h3 className="font-black text-forest-900 text-lg">{t.whatsappTitle}</h3>
+              <Share2 className="w-5 h-5 text-emerald-700" />
+              <h3 className="heading-md">{t.whatsappTitle}</h3>
             </div>
 
             <div className="space-y-2 text-xs">
@@ -108,7 +108,7 @@ export const FamilyBridge: React.FC<FamilyBridgeProps> = ({ lang = 'en' }) => {
                     onClick={() => setTone(toneKey)}
                     className={`px-3 py-1.5 rounded-xl border-2 border-forest-900 text-xs font-bold transition-all ${
                       tone === toneKey
-                        ? 'bg-forest-900 text-cream-50 shadow-[2px_2px_0px_0px_#0F2923]'
+                        ? 'bg-forest-900 text-cream-50 shadow-[2px_2px_0px_0px_#0A221C]'
                         : 'bg-cream-100 text-forest-900 hover:bg-sage-100'
                     }`}
                   >
@@ -119,7 +119,7 @@ export const FamilyBridge: React.FC<FamilyBridgeProps> = ({ lang = 'en' }) => {
             </div>
 
             {/* Message Preview */}
-            <div className="p-4 rounded-xl bg-cream-50 border-2 border-forest-900 text-xs text-forest-900 font-mono whitespace-pre-wrap leading-relaxed max-h-56 overflow-y-auto shadow-[2px_2px_0px_0px_#0F2923]">
+            <div className="p-4 rounded-xl bg-cream-50 border-2 border-forest-900 text-xs text-forest-900 font-mono whitespace-pre-wrap leading-relaxed max-h-56 overflow-y-auto shadow-[2px_2px_0px_0px_#0A221C]">
               {familyMessage}
             </div>
           </div>
@@ -144,21 +144,21 @@ export const FamilyBridge: React.FC<FamilyBridgeProps> = ({ lang = 'en' }) => {
         </div>
 
         {/* Doctor Visit Checklist */}
-        <div className="brutal-card p-6 space-y-4 flex flex-col justify-between">
+        <div className="brutal-card p-6 space-y-4 flex flex-col justify-between shadow-[4px_4px_0px_0px_#0A221C]">
           <div className="space-y-4">
             <div className="flex items-center gap-2 pb-3 border-b-2 border-forest-900/10">
-              <Stethoscope className="w-5 h-5 text-forest-900" />
-              <h3 className="font-black text-forest-900 text-lg">{t.clinicianTitle}</h3>
+              <Stethoscope className="w-5 h-5 text-emerald-800" />
+              <h3 className="heading-md">{t.clinicianTitle}</h3>
             </div>
 
-            <p className="text-xs text-forest-800 leading-relaxed font-medium">
+            <p className="body-sm text-forest-800">
               {t.clinicianDesc}
             </p>
 
             <div className="space-y-3 pt-1">
               {doctorQuestions.map((q, idx) => (
-                <div key={idx} className="p-3.5 bg-cream-50 border-2 border-forest-900 rounded-xl space-y-1 shadow-[2px_2px_0px_0px_#0F2923]">
-                  <div className="text-[11px] font-black uppercase tracking-wider text-forest-800 flex items-center gap-1">
+                <div key={idx} className="p-3.5 bg-cream-50 border-2 border-forest-900 rounded-xl space-y-1 shadow-[2px_2px_0px_0px_#0A221C]">
+                  <div className="eyebrow flex items-center gap-1 text-forest-800">
                     <Heart className="w-3.5 h-3.5 text-red-600 inline" /> {lang === 'hi' ? `सवाल ${idx + 1}:` : `Question ${idx + 1}:`}
                   </div>
                   <p className="text-forest-950 text-xs italic font-medium leading-relaxed">

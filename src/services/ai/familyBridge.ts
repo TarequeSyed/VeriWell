@@ -13,7 +13,7 @@ export function generateFamilyForwardMessage(
 ): string {
   if (lang === 'hi') {
     const greeting = tone === 'respectful'
-      ? "नमस्ते आदरणीय परिवारजनों 🙏,"
+      ? "नमस्ते आदरणीय परिवारजनों,"
       : tone === 'casual'
       ? "नमस्ते सभी को,"
       : "प्रिय परिवारजनों,";
@@ -34,7 +34,7 @@ export function generateFamilyForwardMessage(
 कृपया कोई भी बदलाव करने से पहले अपने डॉक्टर से सलाह जरूर लें:
 ${evidenceCard.url}
 
-यह संदेश केवल परिवार के सभी सदस्यों के स्वास्थ्य और सुरक्षा की फिक्र में साझा किया गया है! 🙏❤️`;
+यह संदेश केवल परिवार के सभी सदस्यों के स्वास्थ्य और सुरक्षा की फिक्र में साझा किया गया है। सादर और सस्नेह।`;
   }
 
   // English fallback
@@ -56,7 +56,7 @@ Doctors caution that stopping prescribed medicines suddenly can cause serious co
 Please check with our doctor before making any changes:
 ${evidenceCard.url}
 
-Sending this with love and care for everyone's health! 🙏`;
+Sending this with care for everyone's health and safety.`;
 }
 
 /**

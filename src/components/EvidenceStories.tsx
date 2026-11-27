@@ -77,12 +77,12 @@ export const EvidenceStories: React.FC<EvidenceStoriesProps> = ({ lang = 'en' })
       {/* Intro */}
       <div className="brutal-card p-6">
         <div className="flex items-start gap-4">
-          <div className="p-3 bg-forest-900 text-cream-50 rounded-xl border-2 border-forest-950 shadow-[2px_2px_0px_0px_#0F2923] mt-1">
-            <BookOpen className="w-6 h-6" />
+          <div className="p-3 bg-forest-900 text-cream-50 rounded-xl border-2 border-forest-950 shadow-[2px_2px_0px_0px_#0A221C] mt-1">
+            <BookOpen className="w-6 h-6 text-emerald-400" />
           </div>
           <div>
-            <h2 className="text-2xl font-black text-forest-900 tracking-tight">{t.title}</h2>
-            <p className="text-forest-800 text-sm leading-relaxed font-medium mt-1">
+            <h2 className="heading-xl">{t.title}</h2>
+            <p className="body-base mt-1">
               {t.desc}
             </p>
           </div>
@@ -91,7 +91,7 @@ export const EvidenceStories: React.FC<EvidenceStoriesProps> = ({ lang = 'en' })
 
       {/* Swipeable Story Card */}
       {currentCard && (
-        <div className="brutal-card p-8 space-y-6 relative overflow-hidden bg-white">
+        <div className="brutal-card p-8 space-y-6 relative overflow-hidden bg-white shadow-[6px_6px_0px_0px_#0A221C]">
           {/* Progress indicators */}
           <div className="flex items-center justify-between pb-4 border-b-2 border-forest-900/10">
             <div className="flex gap-2">
@@ -107,7 +107,7 @@ export const EvidenceStories: React.FC<EvidenceStoriesProps> = ({ lang = 'en' })
                 />
               ))}
             </div>
-            <span className="text-xs font-black uppercase tracking-wider text-forest-800">
+            <span className="eyebrow text-forest-800">
               {t.cardOf} {currentIndex + 1} / {evidenceCorpus.length}
             </span>
           </div>
@@ -115,7 +115,7 @@ export const EvidenceStories: React.FC<EvidenceStoriesProps> = ({ lang = 'en' })
           <div className="space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <span className="brutal-badge bg-sage-200 text-forest-950 border-forest-900">
+                <span className="brutal-badge bg-emerald-100 text-emerald-950 border-forest-900 font-bold">
                   {currentCard.topic}
                 </span>
                 <span className="text-xs text-forest-700 font-mono font-bold">
@@ -164,26 +164,26 @@ export const EvidenceStories: React.FC<EvidenceStoriesProps> = ({ lang = 'en' })
               </div>
             </div>
 
-            <h3 className="text-2xl font-black text-forest-900 leading-snug tracking-tight">
+            <h3 className="heading-lg">
               {cardTitle}
             </h3>
 
-            <p className="text-forest-900 text-base leading-relaxed pt-1 font-medium">
+            <p className="body-lead font-normal text-forest-900 pt-1">
               {cardParaphrase}
             </p>
 
             {/* AI Simplified View */}
             {simplifiedText && (
-              <div className="p-5 bg-sage-50 border-2 border-forest-900 rounded-xl space-y-2 mt-3 animate-fade-in shadow-[2px_2px_0px_0px_#0F2923]">
+              <div className="p-5 bg-emerald-50/80 border-2 border-forest-900 rounded-xl space-y-2 mt-3 animate-fade-in shadow-[2px_2px_0px_0px_#0A221C]">
                 <div className="flex items-center justify-between">
-                  <span className="font-black text-forest-950 text-xs flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-forest-800" /> {t.simplifiedTitle}
+                  <span className="font-bold text-forest-950 text-xs flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-800" /> {t.simplifiedTitle}
                   </span>
-                  <span className="brutal-badge bg-emerald-200 text-emerald-950 border-forest-900 flex items-center gap-1 text-[10px]">
+                  <span className="brutal-badge bg-emerald-200 text-emerald-950 border-forest-900 flex items-center gap-1 text-[10px] font-bold">
                     <Cpu className="w-3 h-3" /> PREFER_ON_DEVICE
                   </span>
                 </div>
-                <div className="text-forest-900 text-sm leading-relaxed whitespace-pre-line font-medium pt-1">
+                <div className="body-base text-forest-900 whitespace-pre-line pt-1">
                   {simplifiedText}
                 </div>
               </div>

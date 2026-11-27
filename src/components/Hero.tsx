@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Lock, Users, Cpu, Cloud, ArrowRight, Sparkles, BookOpen } from 'lucide-react';
+import { Shield, Lock, Users, Cpu, Cloud, ArrowRight, Sparkles, BookOpen, GitFork } from 'lucide-react';
 import { Language } from '../i18n/translations';
 
 interface HeroProps {
@@ -87,11 +87,11 @@ export const Hero: React.FC<HeroProps> = ({ lang, onNavigate }) => {
           </span>
         </div>
 
-        <h2 className="text-4xl md:text-5xl font-black text-forest-950 tracking-tight leading-[1.1] mb-5 whitespace-pre-line">
+        <h2 className="heading-display mb-5 whitespace-pre-line">
           {headline}
         </h2>
 
-        <p className="text-forest-800 font-medium text-base md:text-lg leading-relaxed max-w-2xl mb-8">
+        <p className="body-lead max-w-2xl mb-8">
           {subline}
         </p>
 
@@ -100,24 +100,24 @@ export const Hero: React.FC<HeroProps> = ({ lang, onNavigate }) => {
           <button
             type="button"
             onClick={() => onNavigate('claim-lab')}
-            className="brutal-button inline-flex items-center gap-2 px-6 py-3 text-sm"
+            className="brutal-button inline-flex items-center gap-2 px-6 py-3 text-sm shadow-[3px_3px_0px_0px_#0A221C]"
           >
-            <Sparkles className="w-4 h-4" />
+            <Sparkles className="w-4 h-4 text-amber-300" />
             {isHindi ? 'वेरिफाई करें' : 'Verify a Claim'}
             <ArrowRight className="w-4 h-4" />
           </button>
           <button
             type="button"
             onClick={() => onNavigate('belief-engine')}
-            className="brutal-button-secondary inline-flex items-center gap-2 px-6 py-3 text-sm"
+            className="brutal-button-emerald inline-flex items-center gap-2 px-6 py-3 text-sm shadow-[3px_3px_0px_0px_#0A221C]"
           >
-            <Lock className="w-4 h-4 text-forest-900" />
+            <Lock className="w-4 h-4 text-forest-950" />
             {isHindi ? 'निजी चिंता' : 'Private Concern'}
           </button>
           <button
             type="button"
             onClick={() => onNavigate('stories')}
-            className="brutal-button-secondary inline-flex items-center gap-2 px-6 py-3 text-sm"
+            className="brutal-button-secondary inline-flex items-center gap-2 px-6 py-3 text-sm shadow-[3px_3px_0px_0px_#0A221C]"
           >
             <BookOpen className="w-4 h-4 text-forest-900" />
             {isHindi ? 'WHO तथ्य' : 'WHO Facts'}
@@ -128,16 +128,16 @@ export const Hero: React.FC<HeroProps> = ({ lang, onNavigate }) => {
       {/* Stats strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {stats.map((s) => (
-          <div key={s.label} className="brutal-card-sm p-4 text-center">
-            <div className="text-3xl font-black text-forest-950">{s.value}</div>
-            <div className="text-xs font-bold text-forest-700 mt-1 uppercase tracking-wider">{s.label}</div>
+          <div key={s.label} className="brutal-card-sm p-4 text-center shadow-[2px_2px_0px_0px_#0A221C]">
+            <div className="text-3xl font-mono font-black text-forest-950">{s.value}</div>
+            <div className="eyebrow mt-1">{s.label}</div>
           </div>
         ))}
       </div>
 
       {/* Feature triptych */}
       <div>
-        <h3 className="text-xs font-black uppercase tracking-widest text-forest-800 mb-4">
+        <h3 className="eyebrow mb-4">
           {isHindi ? 'तीन शक्तिशाली टूल्स — एक हाइब्रिड सिस्टम' : 'Three powerful tools — one hybrid system'}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -149,14 +149,14 @@ export const Hero: React.FC<HeroProps> = ({ lang, onNavigate }) => {
                 key={f.tab}
                 type="button"
                 onClick={() => onNavigate(f.tab)}
-                className={`brutal-card p-6 text-left space-y-3 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#0F2923] transition-all ${f.color}`}
+                className={`brutal-card p-6 text-left space-y-3 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#0A221C] transition-all shadow-[4px_4px_0px_0px_#0A221C] ${f.color}`}
               >
                 <div className="flex items-center justify-between">
                   <Icon className={`w-7 h-7 ${f.iconColor}`} />
                   <span className={`brutal-badge text-[10px] ${f.badgeColor}`}>{f.badge}</span>
                 </div>
                 <div>
-                  <div className={`font-black text-lg leading-tight ${isInverse ? 'text-cream-50' : 'text-forest-950'}`}>
+                  <div className={`heading-md leading-tight ${isInverse ? 'text-cream-50' : 'text-forest-950'}`}>
                     {f.title}
                   </div>
                   <p className={`text-sm font-medium mt-1 leading-relaxed ${isInverse ? 'text-sage-200' : 'text-forest-800'}`}>
@@ -173,14 +173,14 @@ export const Hero: React.FC<HeroProps> = ({ lang, onNavigate }) => {
       </div>
 
       {/* Hybrid routing explanation */}
-      <div className="brutal-card p-6 bg-cream-50 space-y-4">
-        <h3 className="font-black text-forest-950 text-lg flex items-center gap-2">
-          <span className="text-2xl">🔀</span>
+      <div className="brutal-card p-6 bg-cream-50 space-y-4 shadow-[4px_4px_0px_0px_#0A221C]">
+        <h3 className="heading-lg flex items-center gap-2">
+          <GitFork className="w-5 h-5 text-emerald-800" />
           {isHindi ? 'हाइब्रिड AI रूटिंग कैसे काम करती है?' : 'How Hybrid AI Routing Works'}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-          <div className="p-4 bg-white border-2 border-forest-900 rounded-xl space-y-2 shadow-[2px_2px_0px_0px_#0F2923]">
-            <div className="flex items-center gap-2 font-black text-forest-950">
+          <div className="p-4 bg-white border-2 border-forest-900 rounded-xl space-y-2 shadow-[2px_2px_0px_0px_#0A221C]">
+            <div className="heading-sm flex items-center gap-2 text-forest-950">
               <Cpu className="w-4 h-4 text-emerald-800" />
               {isHindi ? 'ऑन-डिवाइस · Gemini Nano' : 'On-Device · Gemini Nano'}
             </div>
