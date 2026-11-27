@@ -24,8 +24,7 @@ import { PrivacyBoundaryVisualizer } from './components/PrivacyBoundaryVisualize
 import { LandingPage } from './components/LandingPage';
 import { AuthModal } from './components/AuthModal';
 import { VeriWellLogo } from './components/VeriWellLogo';
-import { subscribeToAuth, signOutUser, signInAsJudgeDemo, signInAsGuestDemo } from './services/firebase/auth';
-import { User } from 'firebase/auth';
+import { subscribeToAuth, signOutUser, signInAsJudgeDemo, signInAsGuestDemo, AuthUser } from './services/firebase/auth';
 import { translations, Language } from './i18n/translations';
 
 type WorkspaceTab = 'claim-lab' | 'belief-engine' | 'family-bridge' | 'stories' | 'monitor';
@@ -37,7 +36,7 @@ export function App() {
   const [lang, setLang] = useState<Language>('en');
   const [showArchVisualizer, setShowArchVisualizer] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
   const [selectedClaimForBelief, setSelectedClaimForBelief] = useState<{
     claimText: string;
     evidenceExcerpt: string;
@@ -91,23 +90,23 @@ export function App() {
   const isJudge = currentUser?.displayName?.includes('Judge') || currentUser?.isAnonymous;
 
   const tabBtnClass = (tab: WorkspaceTab) =>
-    `flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all font-bold text-xs ${
+    `flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl transition-all font-bold text-xs border ${
       activeTab === tab
-        ? 'bg-forest-900 text-cream-50 shadow-[1px_1px_0px_0px_#000]'
-        : 'text-forest-800 hover:text-forest-950 hover:bg-sage-100'
+        ? 'bg-forest-900 text-white border-forest-950 shadow-[2px_2px_0px_0px_#0A221C]'
+        : 'bg-white text-forest-800 border-forest-900/15 hover:text-forest-950 hover:bg-slate-100 hover:border-forest-900/40 shadow-sm'
     }`;
 
   return (
     <div className="min-h-screen bg-cream-100 flex flex-col selection:bg-sage-300 selection:text-forest-950 font-sans">
-      {/* Top Emergency Safety Banner */}
-      <div className="bg-red-800 text-cream-50 px-4 py-2 text-xs font-bold text-center flex items-center justify-center gap-2 border-b-2 border-red-950">
-        <AlertCircle className="w-4 h-4 flex-shrink-0" />
+      {/* Top Emergency Safety Banner - Refined Clinical Tone */}
+      <div className="bg-rose-50 text-rose-900 border-b border-rose-200/90 px-4 py-2 text-xs font-semibold text-center flex items-center justify-center gap-2">
+        <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0" />
         <span>{t.emergencyBanner}</span>
       </div>
 
       {/* Main Header with Adaptive Startup vs Workspace View */}
-      <header className="bg-white border-b-2 border-forest-900 sticky top-0 z-30 shadow-[0px_2px_0px_0px_#0A221C]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
+      <header className="bg-white border-b-2 border-forest-900 sticky top-0 z-30 shadow-[0px_2px_0px_0px_#0F172A]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
           
           {/* ─── BRAND LOGO AREA ─── */}
           {viewMode === 'landing' ? (
@@ -136,14 +135,14 @@ export function App() {
                 />
               </button>
 
-              <span className="brutal-badge bg-forest-950 text-cream-50 text-[10px] uppercase font-mono tracking-wider hidden sm:inline-block">
+              <span className="brutal-badge bg-forest-950 text-white text-[10px] uppercase font-mono tracking-wider hidden sm:inline-block">
                 Workspace
               </span>
 
               <button
                 type="button"
                 onClick={() => setViewMode('landing')}
-                className="hidden md:inline-flex items-center gap-1 text-[11px] text-forest-700 hover:text-forest-950 font-bold border border-forest-900/25 px-2 py-1 rounded-lg hover:bg-sage-100 transition-colors"
+                className="hidden md:inline-flex items-center gap-1 text-[11px] text-forest-700 hover:text-forest-950 font-bold border border-forest-900/25 px-2.5 py-1 rounded-lg hover:bg-slate-100 transition-colors"
               >
                 <Globe className="w-3 h-3" />
                 <span>{isHindi ? 'वेबसाइट' : 'Public Site'}</span>
@@ -151,10 +150,9 @@ export function App() {
             </div>
           )}
 
-          {/* ─── CENTER NAVIGATION AREA ─── */}
-          {viewMode === 'landing' ? (
-            /* Startup Marketing Anchor Links (Shown ONLY on Landing Page) */
-            <nav className="hidden lg:flex items-center gap-6 text-xs font-bold text-forest-800">
+          {/* ─── CENTER NAVIGATION AREA (Landing Marketing Anchors) ─── */}
+          {viewMode === 'landing' && (
+            <nav className="hidden lg:flex items-center gap-6 text-xs font-semibold text-forest-700">
               <a href="#how-it-works" className="hover:text-forest-950 transition-colors">
                 {isHindi ? 'कार्यप्रणाली' : 'How It Works'}
               </a>
@@ -168,65 +166,17 @@ export function App() {
                 {isHindi ? 'स्पेक्स' : 'Tech Specs'}
               </a>
             </nav>
-          ) : (
-            /* Clinical Workspace Console Tabs (Revealed ONLY inside Workspace) */
-            <nav className="flex items-center gap-1 bg-cream-50 p-1 rounded-xl border-2 border-forest-900 text-xs shadow-[2px_2px_0px_0px_#0A221C] overflow-x-auto max-w-[calc(100vw-220px)] sm:max-w-none">
-              <button
-                type="button"
-                onClick={() => setActiveTab('claim-lab')}
-                className={tabBtnClass('claim-lab')}
-              >
-                <Shield className="w-3.5 h-3.5" />
-                <span className="whitespace-nowrap">{t.tabs.claimLab}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setActiveTab('belief-engine')}
-                className={tabBtnClass('belief-engine')}
-              >
-                <Lock className="w-3.5 h-3.5" />
-                <span className="whitespace-nowrap">{t.tabs.beliefEngine}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setActiveTab('family-bridge')}
-                className={tabBtnClass('family-bridge')}
-              >
-                <Users className="w-3.5 h-3.5" />
-                <span className="whitespace-nowrap">{t.tabs.familyBridge}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setActiveTab('stories')}
-                className={tabBtnClass('stories')}
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span className="whitespace-nowrap">{t.tabs.stories}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setActiveTab('monitor')}
-                className={tabBtnClass('monitor')}
-              >
-                <Activity className="w-3.5 h-3.5" />
-                <span className="whitespace-nowrap">{t.tabs.monitor}</span>
-              </button>
-            </nav>
           )}
 
           {/* ─── RIGHT ACTION CONTROLS ─── */}
           <div className="flex items-center gap-2 flex-shrink-0">
             {/* Language Switcher */}
-            <div className="flex items-center gap-1 bg-cream-50 p-1 rounded-xl border-2 border-forest-900 text-xs font-black shadow-[2px_2px_0px_0px_#0A221C]">
+            <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
               <button
                 type="button"
                 onClick={() => setLang('en')}
                 className={`px-2 py-1 rounded-lg transition-colors ${
-                  lang === 'en' ? 'bg-forest-900 text-cream-50' : 'text-forest-800 hover:text-forest-950'
+                  lang === 'en' ? 'bg-white text-forest-950 shadow-sm font-black' : 'text-forest-600 hover:text-forest-950'
                 }`}
               >
                 EN
@@ -235,7 +185,7 @@ export function App() {
                 type="button"
                 onClick={() => setLang('hi')}
                 className={`px-2 py-1 rounded-lg transition-colors ${
-                  lang === 'hi' ? 'bg-forest-900 text-cream-50' : 'text-forest-800 hover:text-forest-950'
+                  lang === 'hi' ? 'bg-white text-forest-950 shadow-sm font-black' : 'text-forest-600 hover:text-forest-950'
                 }`}
               >
                 हिन्दी
@@ -250,8 +200,8 @@ export function App() {
                 title="Toggle Hybrid Architecture Visualizer"
                 className={`p-2 rounded-xl border-2 border-forest-900 transition-all ${
                   showArchVisualizer
-                    ? 'bg-forest-900 text-cream-50 shadow-[2px_2px_0px_0px_#0A221C]'
-                    : 'bg-white text-forest-900 shadow-[2px_2px_0px_0px_#0A221C] hover:bg-sage-100'
+                    ? 'bg-forest-900 text-white shadow-[2px_2px_0px_0px_#0F172A]'
+                    : 'bg-white text-forest-900 shadow-[2px_2px_0px_0px_#0F172A] hover:bg-slate-100'
                 }`}
               >
                 <Layers className="w-4 h-4" />
@@ -260,7 +210,7 @@ export function App() {
 
             {/* In Workspace View: Active User Profile Pill & Sign Out */}
             {viewMode === 'workspace' ? (
-              <div className="flex items-center gap-1.5 bg-cream-50 p-1 rounded-xl border-2 border-forest-900 text-xs shadow-[2px_2px_0px_0px_#0A221C]">
+              <div className="flex items-center gap-1.5 bg-white p-1 rounded-xl border-2 border-forest-900 text-xs shadow-[2px_2px_0px_0px_#0F172A]">
                 <div className="flex items-center gap-1.5 px-2 py-1 font-bold text-forest-900">
                   {currentUser?.photoURL ? (
                     <img
@@ -286,7 +236,7 @@ export function App() {
                   type="button"
                   onClick={handleSignOut}
                   title="Sign Out to Public Site"
-                  className="p-1 rounded-lg hover:bg-red-100 text-red-800 transition-colors"
+                  className="p-1 rounded-lg hover:bg-rose-50 text-slate-600 hover:text-rose-700 transition-colors"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                 </button>
@@ -297,10 +247,10 @@ export function App() {
                 <button
                   type="button"
                   onClick={handleJudgeDirectLaunch}
-                  className="brutal-button-emerald py-1.5 px-3 text-xs inline-flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#0A221C]"
+                  className="brutal-button-emerald py-2 px-3.5 text-xs inline-flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#064E3B]"
                   title="1-Click Direct Demo Launch for Evaluators"
                 >
-                  <Zap className="w-3.5 h-3.5 text-forest-950 fill-forest-950" />
+                  <Zap className="w-3.5 h-3.5 text-white fill-white" />
                   <span className="hidden sm:inline">{isHindi ? 'जज डेमो' : 'Judge Demo'}</span>
                 </button>
 
@@ -308,18 +258,18 @@ export function App() {
                   <button
                     type="button"
                     onClick={() => setViewMode('workspace')}
-                    className="brutal-button py-1.5 px-3 text-xs inline-flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#0A221C]"
+                    className="brutal-button py-2 px-3.5 text-xs inline-flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#020617]"
                   >
                     <span>{isHindi ? 'वर्कस्पेस' : 'Console'}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <ArrowRight className="w-3.5 h-3.5 text-white" />
                   </button>
                 ) : (
                   <button
                     type="button"
                     onClick={() => setIsAuthModalOpen(true)}
-                    className="brutal-button py-1.5 px-3 text-xs inline-flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#0A221C]"
+                    className="brutal-button py-2 px-3.5 text-xs inline-flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#020617]"
                   >
-                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                    <Sparkles className="w-3.5 h-3.5 text-white" />
                     <span>{isHindi ? 'साइन इन' : 'Get Started'}</span>
                   </button>
                 )}
@@ -327,6 +277,58 @@ export function App() {
             )}
           </div>
         </div>
+
+        {/* ─── DEDICATED STATIC WORKSPACE NAVIGATION BAR (Zero-Scrollbar, Static Above) ─── */}
+        {viewMode === 'workspace' && (
+          <div className="border-t border-slate-200 bg-slate-50/95 py-2 px-4 sm:px-6">
+            <div className="max-w-6xl mx-auto flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 flex-wrap">
+              <button
+                type="button"
+                onClick={() => setActiveTab('claim-lab')}
+                className={tabBtnClass('claim-lab')}
+              >
+                <Shield className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{t.tabs.claimLab}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('belief-engine')}
+                className={tabBtnClass('belief-engine')}
+              >
+                <Lock className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{t.tabs.beliefEngine}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('family-bridge')}
+                className={tabBtnClass('family-bridge')}
+              >
+                <Users className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{t.tabs.familyBridge}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('stories')}
+                className={tabBtnClass('stories')}
+              >
+                <BookOpen className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{t.tabs.stories}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('monitor')}
+                className={tabBtnClass('monitor')}
+              >
+                <Activity className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{t.tabs.monitor}</span>
+              </button>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Main Content Area */}

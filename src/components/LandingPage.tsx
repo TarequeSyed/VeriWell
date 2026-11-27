@@ -147,22 +147,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </div>
 
       {/* ─── Signature Bio-Clinical Hero Section ─── */}
-      <section className="relative brutal-card p-8 sm:p-12 md:p-16 overflow-hidden bg-white shadow-[6px_6px_0px_0px_#0A221C]">
+      <section className="relative brutal-card p-8 sm:p-12 md:p-16 overflow-hidden bg-white shadow-[6px_6px_0px_0px_#0F172A]">
         {/* Unmistakable Bio-Luminescent Signature Ambient Halo */}
         <div className="absolute inset-0 ambient-glow pointer-events-none" />
 
         <div className="relative z-10 max-w-4xl space-y-8">
-          {/* Top Pill / Badges */}
+          {/* Top Pill / Badges - Harmonious Modern Pills */}
           <div className="flex flex-wrap items-center gap-2.5">
-            <span className="brutal-badge bg-forest-950 text-cream-50 border-forest-950 flex items-center gap-1.5 shadow-[1px_1px_0px_0px_#000]">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-800 border border-slate-200/90 text-xs font-semibold">
+              <Sparkles className="w-3.5 h-3.5 text-slate-600" />
               #BuildHybridAI 2026
             </span>
-            <span className="brutal-badge bg-emerald-200 text-emerald-950 border-forest-900 flex items-center gap-1.5 font-bold">
-              <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/90 text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               Chrome 157+ Gemini Nano Available
             </span>
-            <span className="brutal-badge bg-sky-100 text-sky-950 border-forest-900 font-bold">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 text-sky-800 border border-sky-200/90 text-xs font-semibold">
+              <Cloud className="w-3.5 h-3.5 text-sky-600" />
               Firebase AI Logic Hybrid SDK
             </span>
           </div>
@@ -173,14 +174,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               {isHindi ? (
                 <>
                   स्वास्थ्य सत्य,<br />
-                  <span className="text-emerald-700 underline decoration-4 decoration-emerald-400 underline-offset-8">
+                  <span className="text-emerald-700">
                     गोपनीयता के साथ।
                   </span>
                 </>
               ) : (
                 <>
                   Health Truth,<br />
-                  <span className="text-emerald-700 underline decoration-4 decoration-emerald-400 underline-offset-8">
+                  <span className="text-emerald-700">
                     Engineered for Privacy.
                   </span>
                 </>
@@ -194,28 +195,28 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </p>
           </div>
 
-          {/* Dual Call-To-Action Row */}
+          {/* Dual Call-To-Action Row - Harmonized Button Synergy */}
           <div className="flex flex-wrap items-center gap-4 pt-2">
             {/* Primary Action Button */}
             {isLoggedIn ? (
               <button
                 type="button"
                 onClick={() => onLaunchFeature('claim-lab')}
-                className="brutal-button inline-flex items-center gap-3 px-8 py-4 text-base shadow-[4px_4px_0px_0px_#0A221C] hover:shadow-[6px_6px_0px_0px_#0A221C]"
+                className="brutal-button inline-flex items-center gap-3 px-8 py-4 text-base shadow-[4px_4px_0px_0px_#020617] hover:shadow-[6px_6px_0px_0px_#020617]"
               >
-                <Zap className="w-5 h-5 text-emerald-400 fill-emerald-400" />
+                <Zap className="w-5 h-5 text-white fill-white" />
                 <span>{isHindi ? 'क्लिनिकल वर्कस्पेस में प्रवेश करें' : 'Enter Clinical Workspace'}</span>
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5 text-white" />
               </button>
             ) : (
               <button
                 type="button"
                 onClick={onGetStarted}
-                className="brutal-button inline-flex items-center gap-3 px-8 py-4 text-base shadow-[4px_4px_0px_0px_#0A221C] hover:shadow-[6px_6px_0px_0px_#0A221C]"
+                className="brutal-button inline-flex items-center gap-3 px-8 py-4 text-base shadow-[4px_4px_0px_0px_#020617] hover:shadow-[6px_6px_0px_0px_#020617]"
               >
-                <Sparkles className="w-5 h-5 text-amber-300" />
+                <Sparkles className="w-5 h-5 text-white" />
                 <span>{isHindi ? 'शुरू करें (गेट स्टार्टेड)' : 'Get Started'}</span>
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5 text-white" />
               </button>
             )}
 
@@ -223,10 +224,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               type="button"
               onClick={onJudgeDirectLaunch}
-              className="brutal-button-emerald inline-flex items-center gap-2.5 px-6 py-4 text-sm font-black shadow-[4px_4px_0px_0px_#0A221C]"
+              className="brutal-button-emerald inline-flex items-center gap-2.5 px-7 py-4 text-sm font-bold shadow-[4px_4px_0px_0px_#064E3B] hover:shadow-[6px_6px_0px_0px_#064E3B]"
               title="Instant 1-Click Demo for Hackathon Judges"
             >
-              <Zap className="w-4 h-4 text-forest-950 fill-forest-950" />
+              <Zap className="w-4 h-4 text-white fill-white" />
               <span>{isHindi ? 'जज 1-क्लिक लाइव डेमो' : '1-Click Judge Demo'}</span>
             </button>
 
@@ -234,7 +235,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               type="button"
               onClick={() => onLaunchFeature('stories')}
-              className="text-xs text-forest-800 font-bold underline hover:text-forest-950 px-2 py-2"
+              className="text-xs text-forest-700 font-bold underline hover:text-forest-950 px-2 py-2"
             >
               {isHindi ? 'WHO तथ्य देखें →' : 'Browse WHO Facts →'}
             </button>
@@ -374,7 +375,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {/* Feature Tabs */}
-          <div className="flex flex-wrap gap-1.5 bg-cream-50 p-1.5 rounded-xl border-2 border-forest-900 shadow-[2px_2px_0px_0px_#0A221C]">
+          <div className="flex flex-wrap gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
             {features.map((f, idx) => (
               <button
                 key={f.id}
@@ -382,8 +383,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 onClick={() => setActiveFeatureTab(idx)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   activeFeatureTab === idx
-                    ? 'bg-forest-900 text-cream-50 shadow-[1px_1px_0px_0px_#000]'
-                    : 'text-forest-800 hover:text-forest-950 hover:bg-sage-100'
+                    ? 'bg-forest-900 text-white shadow-sm'
+                    : 'text-forest-700 hover:text-forest-950 hover:bg-white'
                 }`}
               >
                 {idx + 1}
@@ -610,18 +611,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* ─── Bottom CTA Box with Signature Bio-Glow ─── */}
-      <section className="brutal-card p-8 sm:p-12 text-center bg-forest-950 text-cream-50 space-y-6 shadow-[6px_6px_0px_0px_#064e3b]">
+      {/* ─── Bottom CTA Box with Harmonized Glow ─── */}
+      <section className="brutal-card p-8 sm:p-12 text-center bg-forest-950 text-white space-y-6 shadow-[6px_6px_0px_0px_#020617]">
         <div className="max-w-2xl mx-auto space-y-3">
-          <span className="brutal-badge bg-emerald-400 text-emerald-950 border-emerald-950 text-xs">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-semibold">
             {isHindi ? 'तुरंत शुरू करें' : 'Live Interactive Demo'}
           </span>
-          <h2 className="heading-xl text-cream-50">
+          <h2 className="heading-xl text-white">
             {isHindi
               ? 'हाइब्रिड स्वास्थ्य AI का भविष्य लाइव परखें'
               : 'Experience the Next Generation of Privacy-First Health AI.'}
           </h2>
-          <p className="body-base text-sage-200">
+          <p className="body-base text-slate-300">
             {isHindi
               ? 'जजों और मूल्यांकनकर्ताओं के लिए कोई साइनअप आवश्यक नहीं है। 1-क्लिक एक्सेस से तुरंत पूरी कार्यप्रणाली की जांच करें।'
               : 'Built for #BuildHybridAI 2026. Zero registration needed for evaluators. Launch the full suite instantly.'}
@@ -632,17 +633,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           <button
             type="button"
             onClick={onJudgeDirectLaunch}
-            className="brutal-button-emerald px-8 py-4 text-sm inline-flex items-center gap-2"
+            className="brutal-button-emerald px-8 py-4 text-sm inline-flex items-center gap-2 font-bold shadow-[3px_3px_0px_0px_#064E3B]"
           >
-            <Zap className="w-4 h-4 text-forest-950 fill-forest-950" />
+            <Zap className="w-4 h-4 text-white fill-white" />
             <span>{isHindi ? '1-क्लिक जज डेमो लॉन्च' : '1-Click Judge Demo Launch'}</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 text-white" />
           </button>
 
           <button
             type="button"
             onClick={onGetStarted}
-            className="brutal-button-secondary px-6 py-4 text-sm inline-flex items-center gap-2"
+            className="brutal-button-secondary px-6 py-4 text-sm inline-flex items-center gap-2 font-bold shadow-[3px_3px_0px_0px_#0F172A]"
           >
             <span>{isHindi ? 'Google से साइन इन करें' : 'Sign In with Google'}</span>
           </button>

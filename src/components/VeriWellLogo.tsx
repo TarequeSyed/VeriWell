@@ -29,7 +29,7 @@ export const VeriWellLogo: React.FC<VeriWellLogoProps> = ({
   return (
     <div className={`flex items-center gap-3 select-none ${className}`}>
       {/* Precision Vector Emblem */}
-      <div className={`${dim.box} rounded-xl bg-forest-900 border-2 border-forest-950 flex items-center justify-center p-1 shadow-[2px_2px_0px_0px_#0A221C] flex-shrink-0 relative overflow-hidden group`}>
+      <div className={`${dim.box} rounded-xl bg-forest-900 border-2 border-forest-950 flex items-center justify-center p-1 shadow-[2px_2px_0px_0px_#0F172A] flex-shrink-0 relative overflow-hidden group`}>
         {/* Subtle interior glow */}
         <div className="absolute inset-0 bg-emerald-500/10 pointer-events-none" />
         
@@ -88,13 +88,13 @@ export const VeriWellLogo: React.FC<VeriWellLogoProps> = ({
               VeriWell
             </span>
             {showBadge && (
-              <span className={`brutal-badge bg-emerald-200 text-emerald-950 border-forest-900 font-bold ${dim.badge}`}>
+              <span className={`inline-flex items-center rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/90 font-semibold tracking-wider ${dim.badge}`}>
                 {badgeText}
               </span>
             )}
           </div>
           {subtitle && (
-            <p className={`text-forest-800 font-bold tracking-tight ${dim.sub}`}>
+            <p className={`text-forest-600 font-semibold tracking-tight ${dim.sub}`}>
               {subtitle}
             </p>
           )}

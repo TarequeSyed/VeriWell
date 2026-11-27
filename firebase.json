@@ -15,5 +15,20 @@
   },
   "firestore": {
     "rules": "firestore.rules"
+  },
+  "auth": {
+    "providers": {
+      "anonymous": true,
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "VeriWell",
+        "supportEmail": "tareque1234syed@gmail.com",
+        "authorizedRedirectUris": [
+          "https://veriwell-34789.firebaseapp.com/__/auth/handler",
+          "http://localhost:5173",
+          "http://localhost:4173"
+        ]
+      }
+    }
   }
 }

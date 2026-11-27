@@ -57,6 +57,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         setError(isHindi ? 'लॉगिन विंडो बंद कर दी गई थी।' : 'Sign-in popup was closed before completion.');
       } else if (err.code === 'auth/popup-blocked') {
         setError(isHindi ? 'ब्राउज़र पॉप-अप अवरुद्ध हो गया। कृपया अनुमति दें या 1-क्लिक डेमो का उपयोग करें।' : 'Browser popup was blocked. Please allow popups or use 1-Click Demo.');
+      } else if (err.code === 'auth/configuration-not-found') {
+        setError(
+          isHindi
+            ? 'Firebase Console में Google साइन-इन सक्षम नहीं है। कृपया त्वरित 1-क्लिक डेमो बटन का उपयोग करें।'
+            : 'Google Sign-in is not yet enabled in Firebase Console. Please click the 1-Click Demo button above.'
+        );
       } else {
         setError(err.message || 'Google sign-in failed. You can use 1-Click Demo instead.');
       }
@@ -110,27 +116,27 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         )}
 
         {/* Option 1: 1-Click Judge & Hackathon Evaluator Access (Primary) */}
-        <div className="p-5 bg-emerald-50/80 border-2 border-forest-900 rounded-xl space-y-3 shadow-[3px_3px_0px_0px_#0A221C]">
+        <div className="p-5 bg-emerald-50/80 border-2 border-emerald-900/40 rounded-xl space-y-3 shadow-[3px_3px_0px_0px_#064E3B]">
           <div className="flex items-center justify-between">
-            <span className="brutal-badge bg-forest-950 text-cream-50 text-[10px] border-forest-950 flex items-center gap-1 font-mono">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-forest-950 text-white text-[10px] font-mono">
               <Zap className="w-3 h-3 text-emerald-400 fill-emerald-400" />
               {isHindi ? 'जज व रिव्यूअर हेतु' : 'FOR HACKATHON JUDGES'}
             </span>
-            <span className="text-[11px] font-mono font-bold text-forest-700">1-Click Bypass</span>
+            <span className="text-[11px] font-mono font-bold text-emerald-800">1-Click Bypass</span>
           </div>
 
           <div>
             <div className="heading-sm text-forest-950">
               {isHindi ? 'त्वरित जज डेमो एक्सेस' : 'Instant Judge Demo Access'}
             </div>
-            <p className="body-sm text-forest-800 mt-0.5">
+            <p className="body-sm text-forest-700 mt-0.5">
               {isHindi
                 ? 'बिना किसी साइनअप के तुरंत सभी 5 मॉड्यूल्स और टेलीमेट्री का लाइव टेस्ट करें।'
                 : 'Zero credentials required. Instantly unlocks all 5 modules, telemetry, and offline simulation.'}
             </p>
           </div>
 
-          <ul className="text-[11px] text-forest-900 font-medium space-y-1.5">
+          <ul className="text-[11px] text-forest-800 font-medium space-y-1.5">
             <li className="flex items-center gap-1.5">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 flex-shrink-0" />
               <span>{isHindi ? 'सभी 5 टूल्स और ऑफलाइन सिम्युलेटर अनलॉक' : 'All 5 tools + offline simulator unlocked'}</span>
@@ -145,15 +151,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             type="button"
             onClick={handleJudgeLogin}
             disabled={isLoading !== null}
-            className="w-full brutal-button-emerald py-3 px-4 text-xs flex items-center justify-center gap-2 mt-1 shadow-[2px_2px_0px_0px_#0A221C]"
+            className="w-full brutal-button-emerald py-3 px-4 text-xs flex items-center justify-center gap-2 mt-1 shadow-[2px_2px_0px_0px_#064E3B]"
           >
             {isLoading === 'judge' ? (
               <span>{isHindi ? 'एक्सेस तैयार हो रहा है...' : 'Launching Demo Session...'}</span>
             ) : (
               <>
-                <Zap className="w-3.5 h-3.5 text-forest-950 fill-forest-950" />
+                <Zap className="w-3.5 h-3.5 text-white fill-white" />
                 <span>{isHindi ? 'डेमो शुरू करें (1-क्लिक)' : 'Launch 1-Click Judge Demo'}</span>
-                <ArrowRight className="w-3.5 h-3.5 ml-auto" />
+                <ArrowRight className="w-3.5 h-3.5 ml-auto text-white" />
               </>
             )}
           </button>
@@ -174,7 +180,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             type="button"
             onClick={handleGoogleLogin}
             disabled={isLoading !== null}
-            className="w-full brutal-button-secondary py-2.5 px-4 text-xs flex items-center justify-center gap-3 shadow-[2px_2px_0px_0px_#0A221C]"
+            className="w-full brutal-button-secondary py-2.5 px-4 text-xs flex items-center justify-center gap-3 shadow-[2px_2px_0px_0px_#0F172A]"
           >
             <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
               <path
@@ -206,7 +212,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             type="button"
             onClick={handleGuestLogin}
             disabled={isLoading !== null}
-            className="w-full bg-cream-50 hover:bg-sage-100 text-forest-900 border-2 border-forest-900 rounded-xl py-2 px-4 text-xs font-bold flex items-center justify-center gap-2 transition-colors shadow-[2px_2px_0px_0px_#0A221C]"
+            className="w-full bg-white hover:bg-slate-100 text-forest-900 border-2 border-forest-900 rounded-xl py-2 px-4 text-xs font-bold flex items-center justify-center gap-2 transition-colors shadow-[2px_2px_0px_0px_#0F172A]"
           >
             <UserIcon className="w-3.5 h-3.5 text-forest-700" />
             <span>

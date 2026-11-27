@@ -5,9 +5,24 @@
 
 ---
 
-## Current Status: Milestone 0 & 1 Complete (Scaffolding, Hybrid Architecture & Vertical Slice)
+## Current Status: Milestone 0, 1, 2 & Hackathon Polish Complete
 
 ### Completed Tasks
+- [x] **Static Workspace Header & Navigation**:
+  - Re-architected workspace navigation into a clean static sub-header bar.
+  - Removed all scrollable overflow containers, preventing Windows horizontal scroll tracks.
+- [x] **App Check 401 & Cloud Resiliency Fix**:
+  - Purged invalid dummy debug token from `src/services/firebase/config.ts`.
+  - Added WHO/NIDDK evidence corpus fallback in `src/services/ai/router.ts`.
+- [x] **On-Device Gemini Nano Gating & Fallback Resilience**:
+  - Added local in-browser empathy and teach-back comprehension scoring fallback in `src/services/ai/router.ts`.
+  - Documented Chrome flags for `#optimization-guide-on-device-model` and `#prompt-api-for-gemini-nano`.
+- [x] **Belief Engine Typography & Color Harmonization**:
+  - Eliminated black-on-black heading bug in `src/components/BeliefEngine.tsx`.
+  - Harmonized cards to luminous Neo-Brutalist Bio-Clinical aesthetic with Poppins typography.
+- [x] **Custom Topics & Patient Doubts in Family Bridge**:
+  - Added custom claim text input and interactive personal concern textarea with 5 quick prompt chips.
+  - Dynamically updates WhatsApp counter-messages and Doctor Discussion Question Cards in real time.
 - [x] **Project Name Standardized**: Locked as `VeriWell` across documentation and codebase.
 - [x] **Hardware & Environment Verification**:
   - Chrome 157.0 (exceeds requirement of >= 139).
@@ -81,6 +96,14 @@
   - Complete emoji purge across all codebase modules, replaced with sharp Lucide SVG icons
   - Authentic Startup vs Clinical Workspace dual-navbar architecture: marketing links on front page, internal feature tabs revealed only after entering workspace
   - Dual demo authentication: 1-Click instant Judge Demo bypass + 1-Click Guest Patient Demo + Google OAuth sign-in
+- [x] **Color Synergy & Visual Harmony Overhaul (ColorHunt & Dribbble Redesign)**:
+  - Button & font synergy: Crisp pure white text on rich clinical emerald (`#059669`) and deep obsidian slate (`#0F172A`) with coordinated tactile shadows
+  - Modern HealthTech canvas: Clean, luminous slate-50 canvas (`#F8FAFC`) and pure white card surfaces (`#FFFFFF`) replacing yellowish parchment
+  - Cohesive pill badges, refined emergency notice banner in soft rose, and clean headline typography without marker underline
+- [x] **Firebase Auth Basics & Resilient Demo Session Architecture**:
+  - Diagnosed `auth/configuration-not-found` root cause using `/firebase-auth-basics` skill
+  - Configured `auth` block in `firebase.json` (`anonymous: true`, `emailPassword: true`, `googleSignIn`)
+  - Implemented bulletproof resilient demo fallback in `auth.ts`: Judge Demo and Patient Demo NEVER fail even if Anonymous provider is unprovisioned in Firebase Console
 
 ---
 
@@ -88,7 +111,7 @@
 - `LanguageModel.availability()` evaluated in Chrome DevTools: Returned `'available'`.
 - `npx -y firebase-tools@latest --version`: Returned `15.36.0`.
 - `npm run typecheck`: Exit code 0 (TypeScript verified with 0 errors).
-- `npm run build`: Exit code 0 (1626 modules transformed, bundle emitted into `dist/` in 8.50s).
+- `npm run build`: Exit code 0 (1626 modules transformed, bundle emitted into `dist/` in 7.75s).
 
 ---
 

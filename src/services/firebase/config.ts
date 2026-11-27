@@ -28,9 +28,13 @@ export function initAppCheck() {
 
   try {
     const isDebug = import.meta.env.VITE_FIREBASE_APPCHECK_DEBUG === 'true' || import.meta.env.DEV;
-    
-    if (isDebug) {
-      // Configure local debug token
+    const debugToken = import.meta.env.VITE_FIREBASE_APPCHECK_DEBUG_TOKEN;
+
+    if (debugToken) {
+      // @ts-ignore
+      self.FIREBASE_APPCHECK_DEBUG_TOKEN = debugToken;
+    } else if (isDebug) {
+      // In local dev without explicit debug token, let Firebase SDK generate a valid debug token
       // @ts-ignore
       self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
     }
@@ -41,19 +45,24 @@ export function initAppCheck() {
         provider: new ReCaptchaEnterpriseProvider(siteKey),
         isTokenAutoRefreshEnabled: true,
       });
-    } else {
-      // In dev without site key, use debug provider
+    } else if (debugToken) {
+      // Only initialize debug CustomProvider if a registered debug token is explicitly supplied
       appCheckInstance = initializeAppCheck(app, {
         provider: new CustomProvider({
           getToken: () => {
             return Promise.resolve({
-              token: 'debug-token-local',
+              token: debugToken,
               expireTimeMillis: Date.now() + 60 * 60 * 1000,
             });
           },
         }),
         isTokenAutoRefreshEnabled: true,
       });
+    } else {
+      // Without a valid siteKey or registered debugToken, do NOT attach a dummy fake token.
+      // Attaching an invalid token causes Google APIs (like Vertex AI) to return HTTP 401 App Check invalid.
+      console.info("App Check: Running in development mode without token enforcement.");
+      return null;
     }
   } catch (err) {
     console.warn("App Check initialization notice (continuing in monitoring mode):", err);

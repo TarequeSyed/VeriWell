@@ -7,44 +7,45 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Bio-Clinical Obsidian & Deep Forest
+        // Modern Dribbble/ColorHunt Deep Slate & Charcoal
         forest: {
-          950: '#071914', // Ultra-high contrast editorial text
-          900: '#0A221C', // Signature deep obsidian borders & cards
-          800: '#12382E', // Primary brand deep forest
-          700: '#1A4F42',
-          600: '#256656',
+          950: '#020617', // High-contrast deep slate
+          900: '#0F172A', // Primary structural slate borders & dark buttons
+          800: '#1E293B', // Primary text & active card headers
+          700: '#334155', // Secondary body copy
+          600: '#475569', // Muted captions & secondary metadata
+          500: '#64748B',
         },
-        // On-Device Bio-Emerald Signature Tint ("The VeriWell Signature")
+        // Modern HealthTech Bio-Emerald (WCAG AAA contrast with white text)
         emerald: {
-          50: '#ECFDF5',
-          100: '#D1FAE5',
-          200: '#A7F3D0',
+          50: '#ECFDF5',  // Soft calming mint tint
+          100: '#D1FAE5', // Light mint accent
+          200: '#A7F3D0', // Mint border
           300: '#6EE7B7',
           400: '#34D399',
-          500: '#10B981', // Luminescent on-device hero mint
-          600: '#059669',
-          700: '#047857',
-          800: '#065F46',
-          900: '#064E3B',
+          500: '#10B981', // Luminescent accent
+          600: '#059669', // Primary CTA emerald (prestigious, high-contrast)
+          700: '#047857', // Hover state
+          800: '#065F46', // Deep grounding emerald
+          900: '#064E3B', // Dark emerald shadow & headers
           950: '#022C22',
+        },
+        // Fresh Clinical Canvas (Replacing dingy yellow parchment)
+        cream: {
+          50: '#FFFFFF',  // Pure crisp white card surface
+          100: '#F8FAFC', // Ultra-clean, luminous slate-50 canvas
+          200: '#F1F5F9', // Subtle divider
+          300: '#E2E8F0', // Border tone
+          400: '#CBD5E1',
         },
         // Clinical Sage & Mint Accents
         sage: {
-          50: '#F5FAF7',
-          100: '#EBF4EF',
-          200: '#D7EBDF', // Soft sage accent
-          300: '#BEDECB',
-          400: '#9BC7AC',
-          500: '#6FA881',
-        },
-        // Warm Clinical Parchment Canvas
-        cream: {
-          50: '#FAF9F5', // Card and input background
-          100: '#F4F2E9', // Signature warm parchment body background
-          200: '#EAE7D8',
-          300: '#DDD9C5',
-          400: '#C7C2AA',
+          50: '#F8FAF9',
+          100: '#F0FDF4',
+          200: '#DCFCE7',
+          300: '#BBF7D0',
+          400: '#86EFAC',
+          500: '#4ADE80',
         },
         // Cloud Intelligence Atmospheric Sky
         sky: {

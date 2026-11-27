@@ -13,83 +13,83 @@
   }
 }
 
-/* Neo-Brutalist Bio-Clinical Minimalism Utilities */
+/* Neo-Brutalist Bio-Clinical Minimalism Utilities - Harmonized Synergy */
 @layer utilities {
   /* Cards */
   .brutal-card {
-    @apply bg-white border-2 border-forest-900 rounded-2xl shadow-[4px_4px_0px_0px_#0A221C] transition-all;
+    @apply bg-white border-2 border-forest-900 rounded-2xl shadow-[4px_4px_0px_0px_#0F172A] transition-all;
   }
 
   .brutal-card-sm {
-    @apply bg-white border-2 border-forest-900 rounded-xl shadow-[2px_2px_0px_0px_#0A221C];
+    @apply bg-white border-2 border-forest-900 rounded-xl shadow-[2px_2px_0px_0px_#0F172A];
   }
 
   .brutal-card-hover {
-    @apply hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#0A221C] transition-all;
+    @apply hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_0px_#0F172A] transition-all;
   }
 
-  /* Buttons */
+  /* Buttons - High Contrast, Complete Color Synergy */
   .brutal-button {
-    @apply bg-forest-900 text-cream-50 font-bold border-2 border-forest-950 rounded-xl shadow-[3px_3px_0px_0px_#0A221C] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#0A221C] hover:bg-forest-800 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-forest-900 text-white font-bold border-2 border-forest-950 rounded-xl shadow-[3px_3px_0px_0px_#020617] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_#020617] hover:bg-forest-800 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .brutal-button-secondary {
-    @apply bg-sage-200 text-forest-950 font-bold border-2 border-forest-900 rounded-xl shadow-[3px_3px_0px_0px_#0A221C] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#0A221C] hover:bg-sage-300 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all;
+    @apply bg-white text-forest-900 font-bold border-2 border-forest-900 rounded-xl shadow-[3px_3px_0px_0px_#0F172A] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_#0F172A] hover:bg-slate-50 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all;
   }
 
   .brutal-button-emerald {
-    @apply bg-emerald-400 text-forest-950 font-black border-2 border-forest-950 rounded-xl shadow-[3px_3px_0px_0px_#0A221C] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#0A221C] hover:bg-emerald-300 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all;
+    @apply bg-emerald-600 text-white font-bold border-2 border-emerald-900 rounded-xl shadow-[3px_3px_0px_0px_#064E3B] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_#064E3B] hover:bg-emerald-700 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all;
   }
 
-  /* Badges */
+  /* Badges - Refined Micro-Pills */
   .brutal-badge {
-    @apply font-mono text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border-2 border-forest-900;
+    @apply font-mono text-[11px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-lg border border-forest-900/30;
   }
 
   /* Typographic Hierarchy Standards */
   .heading-display {
-    @apply font-sans font-black tracking-tight text-forest-950 text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.06];
+    @apply font-sans font-black tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.06];
   }
 
   .heading-xl {
-    @apply font-sans font-black tracking-tight text-forest-950 text-2xl sm:text-3xl md:text-4xl leading-tight;
+    @apply font-sans font-black tracking-tight text-2xl sm:text-3xl md:text-4xl leading-tight;
   }
 
   .heading-lg {
-    @apply font-sans font-black tracking-tight text-forest-950 text-xl sm:text-2xl leading-snug;
+    @apply font-sans font-black tracking-tight text-xl sm:text-2xl leading-snug;
   }
 
   .heading-md {
-    @apply font-sans font-bold tracking-tight text-forest-950 text-lg sm:text-xl leading-snug;
+    @apply font-sans font-bold tracking-tight text-lg sm:text-xl leading-snug;
   }
 
   .heading-sm {
-    @apply font-sans font-bold tracking-tight text-forest-950 text-base leading-snug;
+    @apply font-sans font-bold tracking-tight text-base leading-snug;
   }
 
   .eyebrow {
-    @apply font-mono text-[11px] font-black uppercase tracking-widest text-forest-700;
+    @apply font-mono text-[11px] font-bold uppercase tracking-widest text-forest-600;
   }
 
   .body-lead {
-    @apply font-sans font-normal text-forest-800 text-base sm:text-lg md:text-xl leading-relaxed;
+    @apply font-sans font-normal text-base sm:text-lg md:text-xl leading-relaxed;
   }
 
   .body-base {
-    @apply font-sans font-normal text-forest-800 text-sm sm:text-base leading-relaxed;
+    @apply font-sans font-normal text-sm sm:text-base leading-relaxed;
   }
 
   .body-sm {
-    @apply font-sans font-normal text-forest-700 text-xs sm:text-sm leading-normal;
+    @apply font-sans font-normal text-xs sm:text-sm leading-normal;
   }
 
-  /* Signature Atmospheric Bio-Tint ("The Mexico Yellow" equivalent for VeriWell) */
+  /* Signature Atmospheric Bio-Tint */
   .ambient-glow {
-    background: radial-gradient(circle at 50% -5%, rgba(16, 185, 129, 0.20) 0%, rgba(52, 211, 153, 0.08) 35%, rgba(244, 242, 233, 0) 70%);
+    background: radial-gradient(circle at 50% -5%, rgba(5, 150, 105, 0.12) 0%, rgba(16, 185, 129, 0.05) 35%, rgba(248, 250, 252, 0) 70%);
   }
 
   .bio-screen-tint {
-    background: linear-gradient(180deg, rgba(236, 253, 245, 0.60) 0%, rgba(244, 242, 233, 0.85) 60%, rgba(244, 242, 233, 1) 100%);
+    background: linear-gradient(180deg, rgba(236, 253, 245, 0.50) 0%, rgba(248, 250, 252, 0.80) 60%, rgba(248, 250, 252, 1) 100%);
   }
 
   /* Animations */

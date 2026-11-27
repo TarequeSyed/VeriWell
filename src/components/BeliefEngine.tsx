@@ -90,21 +90,24 @@ export const BeliefEngine: React.FC<BeliefEngineProps> = ({
 
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
-      {/* On-device privacy banner */}
-      <div className="bg-forest-900 text-cream-50 border-2 border-forest-950 rounded-2xl p-6 shadow-[4px_4px_0px_0px_#0A221C]">
+      {/* On-device privacy banner - Neo-Brutalist Bio-Clinical Palette */}
+      <div className="brutal-card p-6 bg-gradient-to-br from-white via-emerald-50/40 to-white">
         <div className="flex items-start gap-4">
-          <div className="p-3 bg-forest-800 text-cream-50 rounded-xl border-2 border-forest-950 mt-1 shadow-[2px_2px_0px_0px_#0A221C]">
+          <div className="p-3 bg-forest-900 text-cream-50 rounded-xl border-2 border-forest-950 shadow-[2px_2px_0px_0px_#0A221C] mt-1 flex-shrink-0">
             <Lock className="w-6 h-6 text-emerald-400" />
           </div>
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <span className="brutal-badge bg-emerald-400 text-emerald-950 border-emerald-950 font-black">
+          <div className="space-y-2 flex-grow">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="brutal-badge bg-emerald-100 text-emerald-950 border-emerald-800 font-bold">
                 {t.bannerBadge}
               </span>
-              <span className="eyebrow text-emerald-300">{t.bannerSub}</span>
+              <span className="eyebrow text-emerald-800 font-semibold">{t.bannerSub}</span>
+              <span className="brutal-badge bg-slate-100 text-forest-800 border-forest-900/20 font-bold ml-auto text-[10px] hidden sm:inline-block">
+                0 KB Cloud Egress Guaranteed
+              </span>
             </div>
-            <h2 className="heading-xl text-cream-50">{t.bannerTitle}</h2>
-            <p className="body-base text-sage-100">
+            <h2 className="heading-xl text-forest-950">{t.bannerTitle}</h2>
+            <p className="body-base text-forest-700">
               {t.bannerDesc}
             </p>
           </div>
